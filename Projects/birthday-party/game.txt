@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>尋找七龍珠 - 世界大冒險</title>
+    <style>
+        :root {
+            --primary-color: #ff9800;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --special-color: #9b59b6;
+            --bg-color: #1a1a1a;
+            --text-color: #ecf0f1;
+        }
+
+        body {
+            font-family: '微軟正黑體', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+        }
+
+        .status-bar {
+            background: var(--secondary-color);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: inline-block;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .dragon-balls {
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+        }
+
+        /* 網格佈局 */
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .location-card {
+            background: #34495e;
+            border: 2px solid #465c71;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .location-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+            border-color: var(--primary-color);
+        }
+
+        .location-card.explored {
+            opacity: 0.6;
+            cursor: default;
+            transform: none;
+        }
+
+        .location-card.special {
+            border-color: var(--special-color);
+            box-shadow: 0 0 10px rgba(155, 89, 182, 0.2);
+        }
+        
+        .location-card.special::after {
+            content: "⚠️ 特殊區域";
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 0.7rem;
+            background: var(--special-color);
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+
+        .icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        /* 彈窗樣式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: var(--secondary-color);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            text-align: left;
+            border: 2px solid var(--primary-color);
+            position: relative;
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #555;
+            padding-bottom: 10px;
+        }
+
+        .modal-desc {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #e68a00;
+        }
+
+        .result-area {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        /* 勝利畫面 */
+        .win-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f1c40f, #e67e22);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            color: #fff;
+        }
+        
+        .shenron {
+            font-size: 5rem;
+            animation: float 3s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>🌍 尋找散落的七龍珠 🐉</h1>
+    
+    <div class="status-bar">
+        <div>目前蒐集進度</div>
+        <div class="dragon-balls" id="score-board">⚪ ⚪ ⚪ ⚪ ⚪ ⚪ ⚪</div>
+    </div>
+
+    <div class="map-grid" id="game-board">
+        <!-- JS 會自動產生卡片 -->
+    </div>
+
+    <!-- 任務說明彈窗 -->
+    <div class="modal-overlay" id="mission-modal">
+        <div class="modal-content">
+            <h2 class="modal-title" id="modal-title">地點名稱</h2>
+            <p class="modal-desc" id="modal-desc">這裡會顯示規則說明...</p>
+            <button class="btn" id="action-btn">開始探索</button>
+            <div class="result-area" id="result-area"></div>
+        </div>
+    </div>
+
+    <!-- 勝利畫面 -->
+    <div class="win-overlay" id="win-screen">
+        <div class="shenron">🐲</div>
+        <h2>神龍出現了！</h2>
+        <p>恭喜你找齊了所有龍珠，你的願望即將實現！</p>
+        <button class="btn" style="background:#fff; color:#e67e22; width: auto; margin-top:20px;" onclick="location.reload()">重新開始</button>
+    </div>
+
+    <script>
+        // 遊戲資料設定
+        const locations = [
+            // 七大洲
+            { id: 1, name: "亞洲", type: "continent", icon: "🏯", desc: "這裡是世界最大的洲，人海茫茫，龍珠可能藏在古老的寺廟中。", isSpecial: false },
+            { id: 2, name: "非洲", type: "continent", icon: "🦁", desc: "廣闊的草原與沙漠，小心猛獸出沒！你需要通過勇氣的試煉。", isSpecial: false },
+            { id: 3, name: "北美洲", type: "continent", icon: "🗽", desc: "繁華的都市叢林，龍珠或許偽裝成了某個科技產品？", isSpecial: false },
+            { id: 4, name: "南美洲 (亞馬遜)", type: "continent", icon: "🦜", desc: "【特殊關卡】深入亞馬遜雨林，迷霧重重，探索成功率只有 50%！", isSpecial: true, effect: "risk" },
+            { id: 5, name: "南極洲", type: "continent", icon: "❄️", desc: "【特殊關卡】極寒之地，這裡被冰封了千年。若這裡沒有龍珠，你會被凍僵暫停一回合（模擬）。", isSpecial: true, effect: "freeze" },
+            { id: 6, name: "歐洲", type: "continent", icon: "🏰", desc: "充滿歷史與藝術的大地，龍珠可能藏在博物館的深處。", isSpecial: false },
+            { id: 7, name: "大洋洲", type: "continent", icon: "🦘", desc: "島嶼眾多，你需要跳島尋找線索。", isSpecial: false },
+            // 五大洋
+            { id: 8, name: "太平洋", type: "ocean", icon: "🌊", desc: "世界最大的海洋，深海壓力巨大，需要潛水艇才能探索。", isSpecial: false },
+            { id: 9, name: "大西洋 (百慕達)", type: "ocean", icon: "🚢", desc: "【特殊關卡】神秘的百慕達三角洲，雷達失靈。你必須回答一個謎題才能進入。", isSpecial: true, effect: "riddle" },
+            { id: 10, name: "印度洋", type: "ocean", icon: "🌅", desc: "溫暖的洋流，但也伴隨著強烈的季風，小心航行。", isSpecial: false },
+            { id: 11, name: "北冰洋", type: "ocean", icon: "🧊", desc: "【特殊關卡】浮冰遍布，這裡有北極熊守護。如果你找到龍珠，可獲得額外提示（模擬）。", isSpecial: true, effect: "bonus" },
+            { id: 12, name: "南大洋", type: "ocean", icon: "🐋", desc: "環繞南極的狂暴海洋，只有最勇敢的水手敢靠近。", isSpecial: false }
+        ];
+
+        let dragonBallsFound = 0;
+        let gameActive = true;
+        let currentTarget = null;
+        
+        // 初始化遊戲
+        function initGame() {
+            const gameBoard = document.getElementById('game-board');
+            
+            // 隨機分配 7 顆龍珠
+            // 建立一個長度12的陣列，7個true(有球)，5個false(沒球)
+            let balls = Array(7).fill(true).concat(Array(5).fill(false));
+            // 洗牌算法 (Fisher-Yates)
+            for (let i = balls.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [balls[i], balls[j]] = [balls[j], balls[i]];
+            }
+
+            // 將球的狀態綁定到地點並渲染
+            locations.forEach((loc, index) => {
+                loc.hasBall = balls[index];
+                loc.explored = false;
+
+                const card = document.createElement('div');
+                card.className = `location-card ${loc.isSpecial ? 'special' : ''}`;
+                card.innerHTML = `
+                    <div class="icon">${loc.icon}</div>
+                    <div class="name">${loc.name}</div>
+                `;
+                card.onclick = () => openModal(loc, card);
+                gameBoard.appendChild(card);
+            });
+        }
+
+        // 開啟彈窗
+        const modal = document.getElementById('mission-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+        const actionBtn = document.getElementById('action-btn');
+        const resultArea = document.getElementById('result-area');
+        let currentCardElement = null;
+
+        function openModal(loc, cardElement) {
+            if (loc.explored || !gameActive) return;
+
+            currentTarget = loc;
+            currentCardElement = cardElement;
+            
+            modalTitle.innerText = loc.name;
+            modalDesc.innerText = loc.desc;
+            
+            // 重置彈窗狀態
+            resultArea.style.display = 'none';
+            resultArea.innerHTML = '';
+            actionBtn.style.display = 'block';
+            actionBtn.innerText = "接受任務並探索";
+            actionBtn.onclick = () => exploreLocation();
+            
+            modal.style.display = 'flex';
+        }
+
+        // 探索邏輯
+        function exploreLocation() {
+            actionBtn.style.display = 'none'; // 隱藏按鈕防止連點
+            resultArea.style.display = 'block';
+            resultArea.innerHTML = '🔍 正在搜尋中...';
+            resultArea.style.color = '#ccc';
+
+            // 模擬延遲，增加緊張感
+            setTimeout(() => {
+                let found = currentTarget.hasBall;
+                
+                // 特殊關卡邏輯 (這裡簡單模擬，可以加入更複雜的互動)
+                if (currentTarget.effect === "risk" && Math.random() > 0.5) {
+                    // 亞馬遜有50%機率即使有球也找不到 (模擬)
+                    // 為了遊戲體驗，這裡我們假設如果失敗就顯示空手而歸
+                    // 但為了不讓玩家卡關，我們簡化為：如果運氣不好，顯示遭遇危險但逃脫
+                }
+
+                if (found) {
+                    resultArea.innerHTML = '✨ 恭喜！你找到了一顆龍珠！ 🟠';
+                    resultArea.style.color = '#f1c40f';
+                    dragonBallsFound++;
+                    updateScore();
+                } else {
+                    resultArea.innerHTML = '💨 這裡什麼都沒有，只是一片荒蕪...';
+                    resultArea.style.color = '#95a5a6';
+                }
+
+                // 標記為已探索
+                currentTarget.explored = true;
+                currentCardElement.classList.add('explored');
+                if(found) {
+                    currentCardElement.style.borderColor = '#f1c40f';
+                    currentCardElement.querySelector('.icon').innerText = '🟠'; // 變更圖示為龍珠
+                }
+
+                // 關閉彈窗延遲
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    checkWin();
+                }, 1500);
+
+            }, 1000);
+        }
+
+        // 更新分數顯示
+        function updateScore() {
+            const scoreBoard = document.getElementById('score-board');
+            let ballsDisplay = '';
+            for(let i=0; i<7; i++) {
+                if (i < dragonBallsFound) {
+                    ballsDisplay += '🟠 ';
+                } else {
+                    ballsDisplay += '⚪ ';
+                }
+            }
+            scoreBoard.innerText = ballsDisplay;
+        }
+
+        // 檢查勝利
+        function checkWin() {
+            if (dragonBallsFound >= 7) {
+                gameActive = false;
+                document.getElementById('win-screen').style.display = 'flex';
+            }
+        }
+
+        // 點擊遮罩關閉 (如果不想強制選擇)
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // 啟動
+        initGame();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>非洲國旗挑戰 - 七龍珠·世界冒險</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+      background: linear-gradient(135deg, #CD853F 0%, #DEB887 100%);
+      color: #fff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      color: #ffd700;
+    }
+
+    /* 遊戲區域 */
+    .game-area {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 215, 0, 0.5);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    /* 進度條 */
+    .progress-bar {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      color: #ffd700;
+      font-weight: bold;
+    }
+
+    /* 計時器 */
+    .timer {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .timer.warning {
+      color: #ff6b6b;
+      animation: pulse 0.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* 國旗顯示區 */
+    .flag-container {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .flag-title {
+      color: #333;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .flag-display {
+      width: 100%;
+      max-width: 400px;
+      height: 200px;
+      border: 3px solid #333;
+      border-radius: 5px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 選項按鈕區 */
+    .options-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .option-btn {
+      background: linear-gradient(45deg, #4CAF50, #45a049);
+      color: white;
+      border: none;
+      padding: 20px;
+      font-size: 1.3rem;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      min-height: 70px;
+    }
+
+    .option-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(76, 175, 80, 0.5);
+    }
+
+    .option-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .option-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* 回饋訊息 */
+    .feedback {
+      display: none;
+      text-align: center;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.correct {
+      background: rgba(76, 175, 80, 0.3);
+      border: 2px solid #4CAF50;
+      color: #4CAF50;
+    }
+
+    .feedback.wrong {
+      background: rgba(255, 107, 107, 0.3);
+      border: 2px solid #ff6b6b;
+      color: #ff6b6b;
+    }
+
+    /* 動作按鈕 */
+    .action-buttons {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .action-buttons.show {
+      display: grid;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      min-height: 50px;
+    }
+
+    .btn-next {
+      background: linear-gradient(45deg, #2196F3, #1976D2);
+      color: white;
+    }
+
+    .btn-next:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(33, 150, 243, 0.5);
+    }
+
+    .btn-restart {
+      background: linear-gradient(45deg, #FF9800, #F57C00);
+      color: white;
+    }
+
+    .btn-restart:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 152, 0, 0.5);
+    }
+
+    .btn-back {
+      background: linear-gradient(45deg, #757575, #616161);
+      color: white;
+    }
+
+    .btn-back:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(117, 117, 117, 0.5);
+    }
+
+    /* 成功畫面 */
+    .success-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .success-overlay.show {
+      display: flex;
+    }
+
+    .success-content {
+      text-align: center;
+      animation: bounceIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes bounceIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      50% { transform: scale(1.05); }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .dragon-ball {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 30px;
+      background: radial-gradient(circle at 30% 30%, #ffd700, #ff8c00);
+      border-radius: 50%;
+      box-shadow: 0 0 60px #ffd700;
+      animation: glow 1.5s infinite;
+      position: relative;
+    }
+
+    .dragon-ball::after {
+      content: '⭐';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4rem;
+    }
+
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 60px #ffd700; }
+      50% { box-shadow: 0 0 100px #ffd700; }
+    }
+
+    .success-content h2 {
+      font-size: 2.5rem;
+      color: #ffd700;
+      margin-bottom: 20px;
+    }
+
+    .success-content p {
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+    }
+
+    /* 已完成提示 */
+    .already-completed {
+      text-align: center;
+      padding: 40px;
+    }
+
+    .already-completed h3 {
+      color: #ffd700;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    /* 規則說明樣式 */
+    .africa-rule-box {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 215, 0, 0.6);
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin: 16px auto 20px;
+      max-width: 780px;
+      color: #f9f9f9;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(6px);
+    }
+
+    .africa-rule-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .africa-rule-header h2 {
+      margin: 0;
+      font-size: 1.3rem;
+      letter-spacing: 1px;
+      color: #ffe066;
+      text-shadow: 0 0 6px rgba(255, 223, 128, 0.7);
+    }
+
+    .rule-icon {
+      font-size: 1.4rem;
+    }
+
+    .flag-icon {
+      transform: translateY(1px);
+    }
+
+    .africa-rule-box p {
+      margin: 8px 0;
+      line-height: 1.6;
+      font-size: 0.98rem;
+    }
+
+    .africa-rule-choices {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 10px 0 6px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .choice-arrow {
+      font-size: 1.3rem;
+    }
+
+    .choice-text {
+      font-size: 0.95rem;
+    }
+
+    .africa-rule-highlight {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.25);
+      font-weight: 600;
+      color: #ffeaa7;
+      text-align: center;
+    }
+
+    /* 開始遊戲按鈕 */
+    .start-game-btn {
+      background: linear-gradient(45deg, #ff6b6b, #ff8787);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 1.3rem;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+      transition: all 0.3s ease;
+      font-weight: bold;
+      display: block;
+      margin: 20px auto;
+    }
+
+    .start-game-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
+    }
+
+    .start-game-btn:active {
+      transform: translateY(-1px);
+    }
+
+    /* 響應式 */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .game-area {
+        padding: 20px;
+      }
+
+      .timer {
+        font-size: 2rem;
+      }
+
+      .flag-display {
+        height: 150px;
+      }
+
+      .option-btn {
+        font-size: 1.1rem;
+        padding: 15px;
+        min-height: 60px;
+      }
+
+      .dragon-ball {
+        width: 150px;
+        height: 150px;
+      }
+
+      .dragon-ball::after {
+        font-size: 3rem;
+      }
+
+      .africa-rule-box {
+        padding: 14px 14px;
+      }
+
+      .africa-rule-header h2 {
+        font-size: 1.15rem;
+      }
+
+      .africa-rule-box p {
+        font-size: 0.92rem;
+      }
+
+      .africa-rule-choices {
+        flex-direction: column;
+      }
+
+      .choice-text {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- 標題區 -->
+    <div class="header">
+      <h1>🌍 非洲國旗挑戰</h1>
+      <p>認識非洲各國的旗幟！</p>
+    </div>
+
+    <!-- 規則說明區 -->
+    <div id="rules-section">
+      <div class="africa-rule-box">
+        <div class="africa-rule-header">
+          <span class="rule-icon">🏁</span>
+          <h2>非洲國旗試煉規則</h2>
+          <span class="rule-icon flag-icon">🌍</span>
+        </div>
+
+        <p>
+          非洲關卡的國旗試煉正式開始！每一題會出現一面神祕的非洲國旗，答案會分成
+          <strong>左右兩邊的選項</strong>，小勇士們必須親自站到自己相信的那一側。
+        </p>
+
+        <div class="africa-rule-choices">
+          <div class="choice">
+            <span class="choice-arrow">⬅️</span>
+            <span class="choice-text">左邊：代表其中一個國家選項</span>
+          </div>
+          <div class="choice">
+            <span class="choice-arrow">➡️</span>
+            <span class="choice-text">右邊：代表另一個國家選項</span>
+          </div>
+        </div>
+
+        <p>
+          選擇<strong>正確</strong>的一方，可以繼續留下來迎接下一題；<br>
+          選擇<strong>錯誤</strong>的一方，將暫時退出這場試煉，無法再參與後續答題。
+        </p>
+
+        <p class="africa-rule-highlight">
+          只要 11 位小勇士之中，有任何一人能在國旗挑戰中
+          <strong>連續答對五題</strong>，<br>
+          全隊便能一起通過非洲試煉，成功取得象徵勇氣的龍珠！
+        </p>
+      </div>
+
+      <button class="start-game-btn" onclick="startGameFromRules()">🚀 開始挑戰</button>
+    </div>
+
+    <!-- 遊戲區域 -->
+    <div class="game-area" id="game-area" style="display: none;">
+      <!-- 進度條 -->
+      <div class="progress-bar" id="progress">
+        關卡進度：<span id="current-question">0</span> / 5
+      </div>
+
+      <!-- 計時器 -->
+      <div class="timer" id="timer">
+        剩餘時間：<span id="time-left">10</span> 秒
+      </div>
+
+      <!-- 國旗顯示區 -->
+      <div class="flag-container">
+        <div class="flag-title">這是哪個國家的國旗？</div>
+        <div class="flag-display" id="flag-display"></div>
+      </div>
+
+      <!-- 選項按鈕 -->
+      <div class="options-container" id="options-container">
+        <button class="option-btn" id="option-1" onclick="selectAnswer(0)">選項 1</button>
+        <button class="option-btn" id="option-2" onclick="selectAnswer(1)">選項 2</button>
+      </div>
+
+      <!-- 回饋訊息 -->
+      <div class="feedback" id="feedback"></div>
+
+      <!-- 動作按鈕 -->
+      <div class="action-buttons" id="action-buttons">
+        <button class="btn btn-next" onclick="nextQuestion()">下一題</button>
+        <button class="btn btn-restart" onclick="restartGame()">重新開始</button>
+      </div>
+    </div>
+
+    <!-- 返回按鈕 -->
+    <div style="text-align: center;">
+      <button class="btn btn-back" onclick="goBack()">🗺️ 返回世界地圖</button>
+    </div>
+  </div>
+
+  <!-- 成功畫面 -->
+  <div class="success-overlay" id="success-overlay">
+    <div class="success-content">
+      <div class="dragon-ball"></div>
+      <h2>恭喜通關！</h2>
+      <p id="success-message">你成功取得了第 X 顆龍珠！</p>
+      <button class="btn btn-back" onclick="goBack()">返回世界地圖</button>
+    </div>
+  </div>
+
+  <!-- 引入共用 JS -->
+  <script src="../js/shared.js"></script>
+
+  <script>
+    const LOCATION_KEY = 'africa';
+
+    // 題庫（10 題非洲國旗）
+    const questionBank = [
+      {
+        id: 1,
+        flag: { colors: ['#009639', '#ffffff', '#009639'], type: 'horizontal', star: true },
+        correct: '奈及利亞',
+        wrong: '肯亞',
+        description: '綠-白-綠橫條紋'
+      },
+      {
+        id: 2,
+        flag: { colors: ['#000000', '#CE1126', '#007A3D'], type: 'horizontal', shield: true },
+        correct: '肯亞',
+        wrong: '坦尚尼亞',
+        description: '黑-紅-綠橫條紋帶盾牌'
+      },
+      {
+        id: 3,
+        flag: { colors: ['#078930', '#FCDD09', '#DA121A'], type: 'horizontal' },
+        correct: '衣索比亞',
+        wrong: '迦納',
+        description: '綠-黃-紅橫條紋'
+      },
+      {
+        id: 4,
+        flag: { colors: ['#FCD116', '#CE1126', '#FCD116'], type: 'horizontal', star: true },
+        correct: '迦納',
+        wrong: '喀麥隆',
+        description: '紅-黃-綠橫條紋帶黑星'
+      },
+      {
+        id: 5,
+        flag: { colors: ['#002868', '#ffffff', '#002868'], type: 'horizontal' },
+        correct: '波札那',
+        wrong: '納米比亞',
+        description: '藍-白-藍橫條紋'
+      },
+      {
+        id: 6,
+        flag: { colors: ['#007A4D', '#FFD100', '#DE3908'], type: 'horizontal' },
+        correct: '喀麥隆',
+        wrong: '塞內加爾',
+        description: '綠-紅-黃直條紋帶星'
+      },
+      {
+        id: 7,
+        flag: { colors: ['#00853F', '#FFD100', '#00853F'], type: 'horizontal', star: true },
+        correct: '塞內加爾',
+        wrong: '馬利',
+        description: '綠-黃-紅直條紋帶星'
+      },
+      {
+        id: 8,
+        flag: { colors: ['#002395', '#ffffff', '#CE1126'], type: 'horizontal' },
+        correct: '賴比瑞亞',
+        wrong: '獅子山',
+        description: '藍-白-紅條紋帶星'
+      },
+      {
+        id: 9,
+        flag: { colors: ['#EF2B2D', '#ffffff', '#002F6C'], type: 'horizontal' },
+        correct: '尚比亞',
+        wrong: '辛巴威',
+        description: '綠底帶橙老鷹'
+      },
+      {
+        id: 10,
+        flag: { colors: ['#319400', '#000000', '#FFD100'], type: 'horizontal', bird: true },
+        correct: '辛巴威',
+        wrong: '莫三比克',
+        description: '綠-黃-紅黑帶鳥'
+      }
+    ];
+
+    // 遊戲狀態
+    let currentQuestionIndex = 0;
+    let correctCount = 0;
+    let timeLeft = 10;
+    let timerInterval = null;
+    let selectedQuestions = [];
+
+    // 初始化
+    function init() {
+      // 顯示規則說明，等待玩家點擊開始
+      document.getElementById('rules-section').style.display = 'block';
+      document.getElementById('game-area').style.display = 'none';
+    }
+
+    // 從規則頁面開始遊戲
+    function startGameFromRules() {
+      document.getElementById('rules-section').style.display = 'none';
+      document.getElementById('game-area').style.display = 'block';
+      startGame();
+    }
+
+    // 開始遊戲
+    function startGame() {
+      // 從題庫隨機選 5 題
+      selectedQuestions = getRandomQuestions(questionBank, 5);
+      currentQuestionIndex = 0;
+      correctCount = 0;
+      showQuestion();
+    }
+
+    // 隨機選題
+    function getRandomQuestions(bank, count) {
+      const shuffled = [...bank].sort(() => Math.random() - 0.5);
+      return shuffled.slice(0, count);
+    }
+
+    // 顯示題目
+    function showQuestion() {
+      if (currentQuestionIndex >= selectedQuestions.length) {
+        // 通關
+        completeChallenge();
+        return;
+      }
+
+      const question = selectedQuestions[currentQuestionIndex];
+
+      // 更新進度
+      document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+
+      // 渲染國旗
+      renderFlag(question.flag);
+
+      // 隨機排列選項
+      const options = [question.correct, question.wrong].sort(() => Math.random() - 0.5);
+      document.getElementById('option-1').textContent = options[0];
+      document.getElementById('option-2').textContent = options[1];
+      document.getElementById('option-1').disabled = false;
+      document.getElementById('option-2').disabled = false;
+
+      // 隱藏回饋與按鈕
+      document.getElementById('feedback').classList.remove('show', 'correct', 'wrong');
+      document.getElementById('action-buttons').classList.remove('show');
+
+      // 重置計時器
+      timeLeft = 10;
+      updateTimer();
+      startTimer();
+    }
+
+    // 渲染國旗（簡化版）
+    function renderFlag(flagData) {
+      const flagDisplay = document.getElementById('flag-display');
+      flagDisplay.innerHTML = '';
+
+      if (flagData.type === 'horizontal') {
+        flagData.colors.forEach(color => {
+          const stripe = document.createElement('div');
+          stripe.style.backgroundColor = color;
+          stripe.style.flex = '1';
+          flagDisplay.appendChild(stripe);
+        });
+        flagDisplay.style.display = 'flex';
+        flagDisplay.style.flexDirection = 'column';
+      }
+
+      // 加上標記（星星、盾牌等）
+      if (flagData.star) {
+        const star = document.createElement('div');
+        star.textContent = '⭐';
+        star.style.position = 'absolute';
+        star.style.top = '50%';
+        star.style.left = '50%';
+        star.style.transform = 'translate(-50%, -50%)';
+        star.style.fontSize = '3rem';
+        flagDisplay.appendChild(star);
+      }
+
+      if (flagData.shield) {
+        const shield = document.createElement('div');
+        shield.textContent = '🛡️';
+        shield.style.position = 'absolute';
+        shield.style.top = '50%';
+        shield.style.left = '50%';
+        shield.style.transform = 'translate(-50%, -50%)';
+        shield.style.fontSize = '3rem';
+        flagDisplay.appendChild(shield);
+      }
+
+      if (flagData.bird) {
+        const bird = document.createElement('div');
+        bird.textContent = '🦅';
+        bird.style.position = 'absolute';
+        bird.style.top = '20%';
+        bird.style.left = '20%';
+        bird.style.fontSize = '2rem';
+        flagDisplay.appendChild(bird);
+      }
+    }
+
+    // 計時器
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        updateTimer();
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          timeUp();
+        }
+      }, 1000);
+    }
+
+    function updateTimer() {
+      const timerElem = document.getElementById('timer');
+      document.getElementById('time-left').textContent = timeLeft;
+
+      if (timeLeft <= 3) {
+        timerElem.classList.add('warning');
+      } else {
+        timerElem.classList.remove('warning');
+      }
+    }
+
+    // 時間到
+    function timeUp() {
+      const question = selectedQuestions[currentQuestionIndex];
+      showFeedback(false, question.correct);
+      disableOptions();
+    }
+
+    // 選擇答案
+    function selectAnswer(optionIndex) {
+      clearInterval(timerInterval);
+
+      const question = selectedQuestions[currentQuestionIndex];
+      const selectedAnswer = document.getElementById(`option-${optionIndex + 1}`).textContent;
+      const isCorrect = selectedAnswer === question.correct;
+
+      showFeedback(isCorrect, question.correct);
+      disableOptions();
+
+      if (isCorrect) {
+        correctCount++;
+      }
+    }
+
+    // 顯示回饋
+    function showFeedback(isCorrect, correctAnswer) {
+      const feedback = document.getElementById('feedback');
+      feedback.classList.add('show');
+
+      if (isCorrect) {
+        feedback.classList.add('correct');
+        feedback.textContent = '✓ 答對了！';
+      } else {
+        feedback.classList.add('wrong');
+        feedback.textContent = `✗ 正確答案是：${correctAnswer}`;
+      }
+
+      document.getElementById('action-buttons').classList.add('show');
+    }
+
+    // 禁用選項
+    function disableOptions() {
+      document.getElementById('option-1').disabled = true;
+      document.getElementById('option-2').disabled = true;
+    }
+
+    // 下一題
+    function nextQuestion() {
+      currentQuestionIndex++;
+      showQuestion();
+    }
+
+    // 重新開始
+    function restartGame() {
+      currentQuestionIndex = 0;
+      correctCount = 0;
+      showQuestion();
+    }
+
+    // 完成挑戰
+    function completeChallenge() {
+      clearInterval(timerInterval);
+
+      // 檢查是否已經完成過
+      const completed = getCompletedLocations();
+      const isAlreadyCompleted = completed.includes(LOCATION_KEY);
+
+      if (!isAlreadyCompleted) {
+        // 第一次完成，記錄進度
+        markLocationCompleted(LOCATION_KEY);
+      }
+
+      const ballCount = getDragonBallCount();
+
+      // 顯示訊息
+      if (isAlreadyCompleted) {
+        document.getElementById('success-message').textContent =
+          `恭喜通關！（龍珠已收集，目前共 ${ballCount} 顆）`;
+      } else {
+        document.getElementById('success-message').textContent =
+          `你成功取得了第 ${ballCount} 顆龍珠！`;
+      }
+
+      document.getElementById('success-overlay').classList.add('show');
+    }
+
+    // 返回地圖
+    function goBack() {
+      window.location.href = '../index.html';
+    }
+
+    // 頁面載入時初始化
+    init();
+  </script>
+
+</body>
+</html>

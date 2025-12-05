@@ -1,0 +1,228 @@
+Vibe Coding 專案建立完整 Prompt A（已整合所有需求）
+
+我想用純前端做一個小遊戲網站，請用 原生 HTML + CSS + JavaScript 產生一個可直接部署（如 GitHub Pages）的靜態網站。
+請建立多檔案架構，並為首頁（index.html）產生完整可用的程式碼。
+
+📁 整體檔案結構
+
+請依下列結構建立檔案（本次 Prompt 需先生成 index.html 與 /js/shared.js，其餘遊戲頁面會在下一個 Prompt B 中要求你實作）：
+
+/index.html
+/js/shared.js
+
+/games/
+  asia.html
+  africa.html
+  south-america.html
+  europe.html
+  north-america.html
+  pacific.html
+  indian-ocean.html
+
+🏠 首頁 index.html 的需求
+1. 首頁基本版面
+
+首頁需包含以下區塊：
+
+標題區：「七顆龍珠・世界冒險」
+
+YouTube 影片區塊（無需自動播放）
+
+規則說明（短版）
+
+開始冒險按鈕
+
+主畫面（世界 12 張卡片 + 龍珠計數顯示）
+
+冷笑話／謎語 modal
+
+神龍召喚動畫 overlay
+
+首頁與主畫面請用同一 HTML，以顯示/隱藏方式切換。
+
+2. 首頁 YouTube 影片區塊（不自動播放）
+
+在首頁加入一個 YouTube 影片播放器：
+
+放在標題下方、規則說明上方。
+
+使用 YouTube <iframe> 或 IFrame Player API。
+
+不要自動播放（autoplay=0），由玩家自行按下播放。
+
+影片僅播放其中一段，請先用假值：
+
+videoId：VIDEO_ID_PLACEHOLDER
+
+start：60 秒
+
+end：90 秒
+
+使用 API 每秒檢查播放時間，若超過 end 秒：
+
+暫停影片，或跳回 start 秒。
+
+影片容器需為響應式（16:9）。
+
+3. 規則說明（短版）
+
+請在影片下方、開始冒險按鈕上方加入以下文字區塊：
+
+這次冒險共有 11 位小勇士，大家要同心協力收集七顆真正的龍珠，就能召喚神龍取得寶藏！
+每次由隊伍推派一人抽地點卡，依指示前往挑戰。卡片可能是：
+🟡 真龍珠任務：需要合作破關。
+⚪ 假龍珠任務：會出現冷笑話或謎語，一起解答即可。
+在遊戲途中請保持互相尊重、團結合作，一起找到最後的寶藏！
+
+
+排版要求：
+
+使用 <div> 或 <p>。
+
+手機版需能正常換行、文字不過密。
+
+4. 主畫面（開始冒險後）
+
+按下「開始冒險」按鈕後，首頁隱藏、主畫面顯示。
+
+主畫面內容：
+
+4.1 龍珠數量顯示
+
+顯示「目前龍珠數量：X / 7」。
+
+X 從 localStorage 中讀取。
+
+當數字變動時，需有短暫放大縮小動畫（增加獎勵感）。
+
+4.2 12 張地點卡片（卡牌網格）
+
+使用 CSS Grid（桌面版 3×4，手機 2 欄）。
+
+地點包含：
+
+七大洲：
+
+亞洲、歐洲、非洲、北美洲、南美洲、南極洲、大洋洲
+
+五大洋：
+
+太平洋、大西洋、印度洋、北冰洋、南冰洋
+
+4.3 七個真正關卡（挑戰地點）
+
+固定為：
+
+亞洲（asia）
+
+非洲（africa）
+
+南美洲（south-america）
+
+歐洲（europe）
+
+北美洲（north-america）
+
+太平洋（pacific）
+
+印度洋（indian-ocean）
+
+點擊後 導向對應的 /games/*.html。
+
+4.4 五個冷笑話地點
+
+南極洲（antarctica）
+
+大洋洲（oceania）
+
+大西洋（atlantic）
+
+北冰洋（arctic）
+
+南冰洋（southern）
+
+點擊後會彈出 modal 顯示：
+
+冷笑話或謎語 question
+
+「看答案」按鈕 → 顯示 answer
+
+「返回地圖」按鈕
+
+冷笑話內容請先放 placeholder，之後我會補充。
+
+4.5 已完成狀態
+
+若某地點已完成（localStorage），卡片需顯示：
+
+一顆「發光圓球」（抽象龍珠）
+
+文案：「已取得第 X 顆龍珠」
+
+5. 神龍召喚畫面（龍珠集滿 7 顆時觸發）
+
+以全畫面 overlay 顯示
+
+背景半透明變暗
+
+中央有 pulsing 發光動畫（可用 CSS）
+
+文字：「神龍被召喚！你已集齊七顆龍珠！」
+
+按鈕：「重新開始冒險」
+
+呼叫 resetGame() 清空 localStorage
+
+回到首頁畫面
+
+🧠 shared.js 的需求（本次 Prompt 請生成完整內容）
+
+請建立 /js/shared.js，提供以下函式：
+
+getDragonBallCount()
+
+setDragonBallCount(count)
+
+getCompletedLocations()
+
+markLocationCompleted(locationKey)
+
+若未完成 → 新增至 completedLocations 並把 dragonBallCount +1
+
+若已完成 → 不重複加分
+
+resetGame()
+
+清除 localStorage 中所有進度
+
+要求：
+
+使用 localStorage 儲存：
+
+dragonBallCount（0–7）
+
+completedLocations（陣列，JSON 字串）
+
+每個函式需加入中文註解
+
+程式碼需可直接在所有 /games/*.html 內引用並正常運作
+
+🎨 視覺設計與動畫要求
+
+全站深色冒險風格
+
+卡片有圓角、陰影、hover 浮起效果
+
+點擊後有輕微按壓動畫
+
+響應式設計（手機 & 平板友善）
+
+modal 與 overlay 需有淡入效果
+
+📌 請在本次回覆中完整輸出：
+
+index.html 完整可執行程式碼
+
+/js/shared.js 完整程式碼
+
+其他遊戲頁面不用在本 Prompt 中生成，會留給 Prompt B。

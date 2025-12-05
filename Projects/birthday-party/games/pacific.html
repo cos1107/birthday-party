@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>太平洋 - 七顆龍珠·世界冒險</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+      background: linear-gradient(135deg, #1E90FF 0%, #00BFFF 100%);
+      color: #fff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      color: #ffd700;
+    }
+
+    .game-area {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 215, 0, 0.5);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .instructions {
+      background: rgba(255, 215, 0, 0.1);
+      border-left: 4px solid #ffd700;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 5px;
+    }
+
+    .instructions h2 {
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+
+    .game-content {
+      min-height: 200px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .game-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #ffd700;
+    }
+
+    .game-content p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 15px 40px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-complete {
+      background: linear-gradient(45deg, #4CAF50, #45a049);
+      color: white;
+    }
+
+    .btn-complete:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(76, 175, 80, 0.5);
+    }
+
+    .btn-back {
+      background: linear-gradient(45deg, #757575, #616161);
+      color: white;
+    }
+
+    .btn-back:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(117, 117, 117, 0.5);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .success-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .success-overlay.show {
+      display: flex;
+    }
+
+    .success-content {
+      text-align: center;
+      animation: bounceIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes bounceIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      50% { transform: scale(1.05); }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .success-content .dragon-ball {
+      font-size: 10rem;
+      margin-bottom: 20px;
+      animation: glow 1.5s infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { filter: drop-shadow(0 0 20px #ffd700); }
+      50% { filter: drop-shadow(0 0 40px #ffd700); }
+    }
+
+    .success-content h2 {
+      font-size: 2.5rem;
+      color: #ffd700;
+      margin-bottom: 20px;
+    }
+
+    .success-content p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+    }
+
+    .already-completed {
+      background: rgba(255, 215, 0, 0.2);
+      border: 2px solid #ffd700;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .already-completed h3 {
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .game-area {
+        padding: 20px;
+      }
+
+      .success-content .dragon-ball {
+        font-size: 6rem;
+      }
+
+      .success-content h2 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>🌊 太平洋</h1>
+      <p>真龍珠任務 #6</p>
+    </div>
+
+    <div class="game-area">
+      <div class="instructions">
+        <h2>📜 任務說明</h2>
+        <p>歡迎來到太平洋！這是世界上最大的海洋，覆蓋地球表面的三分之一。探索這片廣闊的藍色海域，獲得龍珠！</p>
+      </div>
+
+      <div class="already-completed" id="already-completed" style="display: none;">
+        <h3>✅ 你已經完成這個任務！</h3>
+        <p>這顆龍珠已經被收集了。</p>
+      </div>
+
+      <div class="game-content">
+        <h3>🎯 挑戰任務</h3>
+        <p>請在這裡放入您的遊戲內容，例如：</p>
+        <ul style="text-align: left; max-width: 500px; margin: 0 auto; font-size: 1.1rem; line-height: 2;">
+          <li>問答題</li>
+          <li>拼圖遊戲</li>
+          <li>團隊合作任務</li>
+          <li>解謎遊戲</li>
+        </ul>
+        <p style="margin-top: 20px; color: #ffd700;">
+          ⚠️ 這是範例內容，請根據您的需求自訂遊戲玩法！
+        </p>
+      </div>
+
+      <div class="button-group" style="margin-top: 30px;">
+        <button class="btn btn-complete" id="complete-btn" onclick="completeTask()">
+          🟡 完成任務
+        </button>
+        <button class="btn btn-back" onclick="goBack()">
+          🗺️ 返回地圖
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="success-overlay" id="success-overlay">
+    <div class="success-content">
+      <div class="dragon-ball">🟡</div>
+      <h2>恭喜！獲得龍珠！</h2>
+      <p>你已成功完成太平洋的挑戰</p>
+      <button class="btn btn-back" onclick="goBack()">返回地圖</button>
+    </div>
+  </div>
+
+  <script src="../js/shared.js"></script>
+
+  <script>
+    const LOCATION_KEY = 'pacific';
+
+    function init() {
+      const completed = getCompletedLocations();
+      if (completed.includes(LOCATION_KEY)) {
+        document.getElementById('already-completed').style.display = 'block';
+        document.getElementById('complete-btn').disabled = true;
+      }
+    }
+
+    function completeTask() {
+      const isNew = markLocationCompleted(LOCATION_KEY);
+
+      if (isNew) {
+        document.getElementById('success-overlay').classList.add('show');
+      } else {
+        alert('你已經完成過這個任務了！');
+      }
+    }
+
+    function goBack() {
+      window.location.href = '../index.html';
+    }
+
+    init();
+  </script>
+
+</body>
+</html>
