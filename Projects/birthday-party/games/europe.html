@@ -196,6 +196,42 @@
       margin-bottom: 10px;
     }
 
+    /* 龍珠揭示動畫 */
+    @keyframes dragonBallReveal {
+      0% {
+        transform: scale(0.3) rotateY(180deg);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.1) rotateY(90deg);
+        opacity: 0.7;
+      }
+      100% {
+        transform: scale(1) rotateY(0deg);
+        opacity: 1;
+      }
+    }
+
+    @keyframes iconGlow {
+      0%, 100% {
+        filter: drop-shadow(0 0 20px #ffd700);
+      }
+      50% {
+        filter: drop-shadow(0 0 40px #ffd700);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     @media (max-width: 768px) {
       .header h1 {
         font-size: 2rem;
@@ -259,6 +295,15 @@
     </div>
   </div>
 
+  <!-- 龍珠揭示 Overlay -->
+  <div class="success-overlay" id="reveal-overlay" style="display: none;">
+    <div class="success-content" style="animation: dragonBallReveal 1.2s ease;">
+      <div style="font-size: 8rem; margin-bottom: 20px; animation: iconGlow 2s ease-in-out infinite;">🟡</div>
+      <h2 style="animation: fadeInUp 1s ease 0.3s backwards;">真龍珠任務完成！</h2>
+      <p style="animation: fadeInUp 1s ease 0.6s backwards;">你獲得了一顆真龍珠</p>
+    </div>
+  </div>
+
   <div class="success-overlay" id="success-overlay">
     <div class="success-content">
       <div class="dragon-ball">🟡</div>
@@ -282,10 +327,19 @@
     }
 
     function completeTask() {
-      const isNew = markLocationCompleted(LOCATION_KEY);
+      const completed = getCompletedLocations();
+      const isNew = !completed.includes(LOCATION_KEY);
 
       if (isNew) {
-        document.getElementById('success-overlay').classList.add('show');
+        // 顯示龍珠揭示動畫
+        document.getElementById('reveal-overlay').style.display = 'flex';
+
+        // 2秒後顯示成功頁面
+        setTimeout(() => {
+          document.getElementById('reveal-overlay').style.display = 'none';
+          markLocationCompleted(LOCATION_KEY);
+          document.getElementById('success-overlay').classList.add('show');
+        }, 2000);
       } else {
         alert('你已經完成過這個任務了！');
       }

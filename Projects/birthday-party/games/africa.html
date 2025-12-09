@@ -13,187 +13,417 @@
 
     body {
       font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
-      background: linear-gradient(135deg, #CD853F 0%, #DEB887 100%);
+      background: linear-gradient(135deg, #8B4513 0%, #D2691E 50%, #CD853F 100%);
       color: #fff;
       min-height: 100vh;
       padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* 裝飾性背景元素 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 140, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(205, 133, 63, 0.1) 0%, transparent 50%);
+      animation: float 20s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(30px, -30px) rotate(5deg); }
+      66% { transform: translate(-20px, 20px) rotate(-5deg); }
     }
 
     .container {
-      max-width: 700px;
+      max-width: 1200px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
+      animation: fadeInDown 0.6s ease;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+      font-size: 3rem;
+      margin-bottom: 15px;
+      text-shadow: 0 0 30px rgba(255, 215, 0, 0.8),
+                   0 5px 10px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.3); }
     }
 
     .header p {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       color: #ffd700;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    /* 規則說明區 */
+    .rules-section {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 3px solid rgba(255, 215, 0, 0.6);
+      border-radius: 25px;
+      padding: 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      animation: fadeInUp 0.6s ease 0.2s backwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .rule-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .rule-header h2 {
+      font-size: 2rem;
+      color: #ffd700;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .rule-content {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .rule-highlight {
+      background: rgba(255, 215, 0, 0.2);
+      border-left: 5px solid #ffd700;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .start-game-btn {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin: 30px auto 0;
+      padding: 20px 40px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(45deg, #4CAF50, #45a049);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+      transition: all 0.3s ease;
+      animation: pulse-btn 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-btn {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .start-game-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(76, 175, 80, 0.6);
     }
 
     /* 遊戲區域 */
     .game-area {
-      background: rgba(255, 255, 255, 0.1);
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* 頂部資訊欄 */
+    .game-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 15px;
+    }
+
+    .progress-bar, .timer {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
       border: 2px solid rgba(255, 215, 0, 0.5);
-      border-radius: 20px;
-      padding: 25px;
-      margin-bottom: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    /* 進度條 */
-    .progress-bar {
-      text-align: center;
+      border-radius: 15px;
+      padding: 12px 20px;
       font-size: 1.2rem;
-      margin-bottom: 15px;
-      color: #ffd700;
       font-weight: bold;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      flex: 1;
     }
 
-    /* 計時器 */
+    .progress-bar {
+      color: #ffd700;
+    }
+
     .timer {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 20px;
-      font-weight: bold;
-      transition: color 0.3s ease;
+      color: #fff;
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      transition: all 0.3s ease;
     }
 
     .timer.warning {
-      color: #ff6b6b;
-      animation: pulse 0.5s infinite;
+      color: #fff;
+      background: linear-gradient(135deg, #ff6b6b, #ff5252);
+      animation: pulse-timer 0.5s infinite;
+      transform: scale(1.1);
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+    @keyframes pulse-timer {
+      0%, 100% { transform: scale(1.1); }
+      50% { transform: scale(1.15); }
     }
 
-    /* 國旗顯示區 */
-    .flag-container {
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
+    /* 遊戲主區域 - 三欄布局 */
+    .game-main {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 15px;
+      align-items: center;
       margin-bottom: 20px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      min-height: 220px;
+      min-height: 320px;
+    }
+
+    /* 左右選項卡片 */
+    .option-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+      backdrop-filter: blur(10px);
+      border: 3px solid rgba(255, 215, 0, 0.4);
+      border-radius: 20px;
+      padding: 25px 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-    }
-
-    .flag-title {
-      color: #333;
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
-
-    .flag-display {
-      width: 100%;
-      max-width: 400px;
-      height: 200px;
-      border: 3px solid #333;
-      border-radius: 5px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      min-height: 250px;
       position: relative;
       overflow: hidden;
     }
 
-    /* 選項按鈕區 */
-    .options-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
+    .option-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, transparent, rgba(255, 215, 0, 0.1));
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
-    .option-btn {
-      background: linear-gradient(45deg, #4CAF50, #45a049);
-      color: white;
-      border: none;
-      padding: 20px;
-      font-size: 1.3rem;
-      border-radius: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: bold;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      min-height: 70px;
+    .option-card:hover::before {
+      opacity: 1;
     }
 
-    .option-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(76, 175, 80, 0.5);
+    .option-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      border-color: rgba(255, 215, 0, 0.8);
+      box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
     }
 
-    .option-btn:active {
-      transform: translateY(-1px);
-    }
-
-    .option-btn:disabled {
+    .option-card.disabled {
+      pointer-events: none;
       opacity: 0.5;
       cursor: not-allowed;
     }
 
-    /* 回饋訊息 */
-    .feedback {
-      display: none;
-      text-align: center;
-      padding: 15px;
-      margin-top: 15px;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      font-weight: bold;
+    .option-card.selected {
+      border-color: #4CAF50;
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.3), rgba(76, 175, 80, 0.2));
+      transform: scale(1.05);
     }
 
-    .feedback.show {
-      display: block;
+    .option-card.correct {
+      border-color: #4CAF50;
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.4), rgba(76, 175, 80, 0.3));
+      animation: correct-bounce 0.6s ease;
+    }
+
+    .option-card.wrong {
+      border-color: #ff6b6b;
+      background: linear-gradient(135deg, rgba(255, 107, 107, 0.4), rgba(255, 107, 107, 0.3));
+      animation: wrong-shake 0.6s ease;
+    }
+
+    @keyframes correct-bounce {
+      0%, 100% { transform: scale(1.05); }
+      50% { transform: scale(1.15); }
+    }
+
+    @keyframes wrong-shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .option-side {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+    }
+
+    .option-country {
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-align: center;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 中間國旗區域 */
+    .flag-section {
+      background: rgba(255, 255, 255, 0.95);
+      border: 4px solid rgba(255, 215, 0, 0.8);
+      border-radius: 25px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 300px;
+      position: relative;
+    }
+
+    .flag-title {
+      color: #8B4513;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .flag-display {
+      width: 100%;
+      max-width: 300px;
+      height: 180px;
+      border: 3px solid #8B4513;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 9rem;
+      background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+      margin-bottom: 15px;
+      line-height: 1;
+      font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+      overflow: hidden;
+    }
+
+    .flag-display img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* 回饋訊息 */
+    .feedback {
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin: 15px 0;
+      min-height: 35px;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      animation: fadeInScale 0.3s ease;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
     .feedback.correct {
-      background: rgba(76, 175, 80, 0.3);
-      border: 2px solid #4CAF50;
       color: #4CAF50;
     }
 
     .feedback.wrong {
-      background: rgba(255, 107, 107, 0.3);
-      border: 2px solid #ff6b6b;
       color: #ff6b6b;
     }
 
-    /* 動作按鈕 */
-    .action-buttons {
-      display: none;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-top: 15px;
+    .feedback.timeout {
+      color: #ff9800;
     }
 
-    .action-buttons.show {
-      display: grid;
+    /* 動作按鈕區 */
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
     }
 
     .btn {
-      padding: 12px 20px;
-      font-size: 1rem;
+      padding: 12px 30px;
+      font-size: 1.1rem;
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      transition: all 0.3s ease;
       font-weight: bold;
+      transition: all 0.3s ease;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      min-height: 50px;
     }
 
     .btn-next {
@@ -207,13 +437,23 @@
     }
 
     .btn-restart {
-      background: linear-gradient(45deg, #FF9800, #F57C00);
+      background: linear-gradient(45deg, #ff9800, #f57c00);
       color: white;
     }
 
     .btn-restart:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 20px rgba(255, 152, 0, 0.5);
+    }
+
+    .btn-show-answer {
+      background: linear-gradient(45deg, #9C27B0, #7B1FA2);
+      color: white;
+    }
+
+    .btn-show-answer:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(156, 39, 176, 0.5);
     }
 
     .btn-back {
@@ -226,7 +466,13 @@
       box-shadow: 0 8px 20px rgba(117, 117, 117, 0.5);
     }
 
-    /* 成功畫面 */
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* 成功/揭示 Overlay */
     .success-overlay {
       display: none;
       position: fixed;
@@ -235,7 +481,7 @@
       width: 100%;
       height: 100%;
       background: rgba(0, 0, 0, 0.95);
-      z-index: 1000;
+      z-index: 10000;
       justify-content: center;
       align-items: center;
       animation: fadeIn 0.3s ease;
@@ -250,41 +496,11 @@
       animation: bounceIn 0.6s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
     @keyframes bounceIn {
       0% { transform: scale(0.3); opacity: 0; }
       50% { transform: scale(1.05); }
       70% { transform: scale(0.9); }
       100% { transform: scale(1); opacity: 1; }
-    }
-
-    .dragon-ball {
-      width: 200px;
-      height: 200px;
-      margin: 0 auto 30px;
-      background: radial-gradient(circle at 30% 30%, #ffd700, #ff8c00);
-      border-radius: 50%;
-      box-shadow: 0 0 60px #ffd700;
-      animation: glow 1.5s infinite;
-      position: relative;
-    }
-
-    .dragon-ball::after {
-      content: '⭐';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 4rem;
-    }
-
-    @keyframes glow {
-      0%, 100% { box-shadow: 0 0 60px #ffd700; }
-      50% { box-shadow: 0 0 100px #ffd700; }
     }
 
     .success-content h2 {
@@ -294,175 +510,135 @@
     }
 
     .success-content p {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       margin-bottom: 30px;
     }
 
-    /* 已完成提示 */
-    .already-completed {
-      text-align: center;
-      padding: 40px;
+    /* 龍珠揭示動畫 */
+    @keyframes dragonBallReveal {
+      0% {
+        transform: scale(0.3) rotateY(180deg);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.1) rotateY(90deg);
+        opacity: 0.7;
+      }
+      100% {
+        transform: scale(1) rotateY(0deg);
+        opacity: 1;
+      }
     }
 
-    .already-completed h3 {
-      color: #ffd700;
-      font-size: 2rem;
-      margin-bottom: 20px;
+    @keyframes iconGlow {
+      0%, 100% {
+        filter: drop-shadow(0 0 20px #ffd700);
+      }
+      50% {
+        filter: drop-shadow(0 0 40px #ffd700);
+      }
     }
 
-    /* 規則說明樣式 */
-    .africa-rule-box {
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(255, 215, 0, 0.6);
-      border-radius: 16px;
-      padding: 18px 20px;
-      margin: 16px auto 20px;
-      max-width: 780px;
-      color: #f9f9f9;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(6px);
+    @keyframes fadeInUp2 {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .africa-rule-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
+    /* 響應式設計 */
+    @media (max-width: 968px) {
+      .game-main {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
 
-    .africa-rule-header h2 {
-      margin: 0;
-      font-size: 1.3rem;
-      letter-spacing: 1px;
-      color: #ffe066;
-      text-shadow: 0 0 6px rgba(255, 223, 128, 0.7);
-    }
+      .option-card {
+        min-height: auto;
+        padding: 20px;
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+      }
 
-    .rule-icon {
-      font-size: 1.4rem;
-    }
+      .option-side {
+        font-size: 2rem;
+        margin-bottom: 0;
+      }
 
-    .flag-icon {
-      transform: translateY(1px);
-    }
+      .option-country {
+        font-size: 1.5rem;
+      }
 
-    .africa-rule-box p {
-      margin: 8px 0;
-      line-height: 1.6;
-      font-size: 0.98rem;
-    }
+      .flag-section {
+        order: -1;
+        padding: 30px 20px;
+        min-height: 320px;
+      }
 
-    .africa-rule-choices {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin: 10px 0 6px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.06);
-    }
+      .flag-display {
+        max-width: 280px;
+        height: 180px;
+        font-size: 6rem;
+      }
 
-    .choice {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex: 1;
-    }
+      .flag-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
 
-    .choice-arrow {
-      font-size: 1.3rem;
-    }
+      .game-info {
+        flex-direction: column;
+        gap: 10px;
+      }
 
-    .choice-text {
-      font-size: 0.95rem;
-    }
+      .progress-bar, .timer {
+        width: 100%;
+      }
 
-    .africa-rule-highlight {
-      margin-top: 10px;
-      padding-top: 6px;
-      border-top: 1px dashed rgba(255, 255, 255, 0.25);
-      font-weight: 600;
-      color: #ffeaa7;
-      text-align: center;
-    }
-
-    /* 開始遊戲按鈕 */
-    .start-game-btn {
-      background: linear-gradient(45deg, #ff6b6b, #ff8787);
-      color: white;
-      border: none;
-      padding: 15px 40px;
-      font-size: 1.3rem;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-      transition: all 0.3s ease;
-      font-weight: bold;
-      display: block;
-      margin: 20px auto;
-    }
-
-    .start-game-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
-    }
-
-    .start-game-btn:active {
-      transform: translateY(-1px);
-    }
-
-    /* 響應式 */
-    @media (max-width: 768px) {
       .header h1 {
         font-size: 2rem;
       }
 
-      .game-area {
-        padding: 20px;
+      .btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
       }
 
-      .timer {
-        font-size: 2rem;
+      .rules-section {
+        padding: 25px 20px;
+      }
+
+      .rule-header h2 {
+        font-size: 1.5rem;
+      }
+
+      .rule-content {
+        font-size: 1rem;
       }
 
       .flag-display {
-        height: 150px;
+        max-width: 220px;
+        height: 140px;
+        font-size: 4rem;
       }
 
-      .option-btn {
-        font-size: 1.1rem;
-        padding: 15px;
-        min-height: 60px;
-      }
-
-      .dragon-ball {
-        width: 150px;
-        height: 150px;
-      }
-
-      .dragon-ball::after {
-        font-size: 3rem;
-      }
-
-      .africa-rule-box {
-        padding: 14px 14px;
-      }
-
-      .africa-rule-header h2 {
-        font-size: 1.15rem;
-      }
-
-      .africa-rule-box p {
-        font-size: 0.92rem;
-      }
-
-      .africa-rule-choices {
+      .action-buttons {
         flex-direction: column;
       }
 
-      .choice-text {
-        font-size: 0.9rem;
+      .btn {
+        width: 100%;
       }
     }
   </style>
@@ -477,39 +653,24 @@
     </div>
 
     <!-- 規則說明區 -->
-    <div id="rules-section">
-      <div class="africa-rule-box">
-        <div class="africa-rule-header">
-          <span class="rule-icon">🏁</span>
-          <h2>非洲國旗試煉規則</h2>
-          <span class="rule-icon flag-icon">🌍</span>
-        </div>
+    <div id="rules-section" class="rules-section">
+      <div class="rule-header">
+        <h2>🏁 非洲國旗試煉規則 🌍</h2>
+      </div>
 
-        <p>
-          非洲關卡的國旗試煉正式開始！每一題會出現一面神祕的非洲國旗，答案會分成
-          <strong>左右兩邊的選項</strong>，小勇士們必須親自站到自己相信的那一側。
-        </p>
+      <div class="rule-content">
+        <p>非洲關卡的國旗試煉正式開始！每一題會出現一面神秘的非洲國旗，答案會分成<strong>左右兩邊的選項</strong>，小勇士們必須親自站到自己相信的那一側。</p>
+      </div>
 
-        <div class="africa-rule-choices">
-          <div class="choice">
-            <span class="choice-arrow">⬅️</span>
-            <span class="choice-text">左邊：代表其中一個國家選項</span>
-          </div>
-          <div class="choice">
-            <span class="choice-arrow">➡️</span>
-            <span class="choice-text">右邊：代表另一個國家選項</span>
-          </div>
-        </div>
+      <div class="rule-highlight">
+        選擇<strong>正確</strong>的一方，可以繼續留下來迎接下一題；<br>
+        選擇<strong>錯誤</strong>的一方，將暫時退出這場試煉，無法再參與後續答題。
+      </div>
 
-        <p>
-          選擇<strong>正確</strong>的一方，可以繼續留下來迎接下一題；<br>
-          選擇<strong>錯誤</strong>的一方，將暫時退出這場試煉，無法再參與後續答題。
-        </p>
-
-        <p class="africa-rule-highlight">
-          只要 11 位小勇士之中，有任何一人能在國旗挑戰中
-          <strong>連續答對五題</strong>，<br>
-          全隊便能一起通過非洲試煉，成功取得象徵勇氣的龍珠！
+      <div class="rule-content">
+        <p style="font-size: 1.2rem; color: #ffd700;">
+          只要 11 位小勇士之中，有任何一人能在國旗挑戰中<strong>連續答對八題</strong>，<br>
+          全隊便能一起通過非洲試煉！
         </p>
       </div>
 
@@ -518,371 +679,319 @@
 
     <!-- 遊戲區域 -->
     <div class="game-area" id="game-area" style="display: none;">
-      <!-- 進度條 -->
-      <div class="progress-bar" id="progress">
-        關卡進度：<span id="current-question">0</span> / 5
+      <!-- 頂部資訊欄 -->
+      <div class="game-info">
+        <div class="progress-bar">
+          關卡進度：<span id="current-question">0</span> / 8
+        </div>
+        <div class="timer" id="timer">
+          剩餘時間：<span id="time-left">10</span> 秒
+        </div>
       </div>
 
-      <!-- 計時器 -->
-      <div class="timer" id="timer">
-        剩餘時間：<span id="time-left">10</span> 秒
-      </div>
+      <!-- 遊戲主區域 - 三欄布局 -->
+      <div class="game-main">
+        <!-- 左側選項 -->
+        <div class="option-card" id="option-left" onclick="selectAnswer(0)">
+          <div class="option-side">⬅️</div>
+          <div class="option-country" id="option-text-0">選項 A</div>
+        </div>
 
-      <!-- 國旗顯示區 -->
-      <div class="flag-container">
-        <div class="flag-title">這是哪個國家的國旗？</div>
-        <div class="flag-display" id="flag-display"></div>
-      </div>
+        <!-- 中間國旗 -->
+        <div class="flag-section">
+          <div class="flag-title">這是哪個國家的國旗？</div>
+          <div class="flag-display" id="flag-display">🏁</div>
+        </div>
 
-      <!-- 選項按鈕 -->
-      <div class="options-container" id="options-container">
-        <button class="option-btn" id="option-1" onclick="selectAnswer(0)">選項 1</button>
-        <button class="option-btn" id="option-2" onclick="selectAnswer(1)">選項 2</button>
+        <!-- 右側選項 -->
+        <div class="option-card" id="option-right" onclick="selectAnswer(1)">
+          <div class="option-side">➡️</div>
+          <div class="option-country" id="option-text-1">選項 B</div>
+        </div>
       </div>
 
       <!-- 回饋訊息 -->
       <div class="feedback" id="feedback"></div>
 
       <!-- 動作按鈕 -->
-      <div class="action-buttons" id="action-buttons">
-        <button class="btn btn-next" onclick="nextQuestion()">下一題</button>
-        <button class="btn btn-restart" onclick="restartGame()">重新開始</button>
+      <div class="action-buttons">
+        <button class="btn btn-show-answer" id="show-answer-btn" onclick="showAnswer()" style="display: none;">👁️ 查看正確答案</button>
+        <button class="btn btn-next" id="next-btn" onclick="nextQuestion()" style="display: none;">➡️ 下一題</button>
+        <button class="btn btn-restart" onclick="restartGame()">🔄 重新開始</button>
+        <button class="btn btn-back" onclick="goBack()">🗺️ 返回地圖</button>
       </div>
     </div>
+  </div>
 
-    <!-- 返回按鈕 -->
-    <div style="text-align: center;">
-      <button class="btn btn-back" onclick="goBack()">🗺️ 返回世界地圖</button>
+  <!-- 龍珠揭示 Overlay -->
+  <div class="success-overlay" id="reveal-overlay">
+    <div class="success-content" style="animation: dragonBallReveal 1.2s ease;">
+      <div style="font-size: 8rem; margin-bottom: 20px; animation: iconGlow 2s ease-in-out infinite;">🟡</div>
+      <h2 style="animation: fadeInUp2 1s ease 0.3s backwards;">真龍珠任務完成！</h2>
+      <p style="animation: fadeInUp2 1s ease 0.6s backwards;">你獲得了一顆真龍珠</p>
     </div>
   </div>
 
-  <!-- 成功畫面 -->
+  <!-- 成功完成 Overlay -->
   <div class="success-overlay" id="success-overlay">
     <div class="success-content">
-      <div class="dragon-ball"></div>
-      <h2>恭喜通關！</h2>
-      <p id="success-message">你成功取得了第 X 顆龍珠！</p>
-      <button class="btn btn-back" onclick="goBack()">返回世界地圖</button>
+      <div style="font-size: 10rem; margin-bottom: 20px; animation: iconGlow 2s ease-in-out infinite;">🟡</div>
+      <h2>恭喜！挑戰成功！</h2>
+      <p>你已連續答對 8 題，成功完成非洲國旗挑戰！</p>
+      <button class="btn btn-back" onclick="goBack()">返回地圖</button>
     </div>
   </div>
 
-  <!-- 引入共用 JS -->
   <script src="../js/shared.js"></script>
 
   <script>
     const LOCATION_KEY = 'africa';
 
-    // 題庫（10 題非洲國旗）
-    const questionBank = [
-      {
-        id: 1,
-        flag: { colors: ['#009639', '#ffffff', '#009639'], type: 'horizontal', star: true },
-        correct: '奈及利亞',
-        wrong: '肯亞',
-        description: '綠-白-綠橫條紋'
-      },
-      {
-        id: 2,
-        flag: { colors: ['#000000', '#CE1126', '#007A3D'], type: 'horizontal', shield: true },
-        correct: '肯亞',
-        wrong: '坦尚尼亞',
-        description: '黑-紅-綠橫條紋帶盾牌'
-      },
-      {
-        id: 3,
-        flag: { colors: ['#078930', '#FCDD09', '#DA121A'], type: 'horizontal' },
-        correct: '衣索比亞',
-        wrong: '迦納',
-        description: '綠-黃-紅橫條紋'
-      },
-      {
-        id: 4,
-        flag: { colors: ['#FCD116', '#CE1126', '#FCD116'], type: 'horizontal', star: true },
-        correct: '迦納',
-        wrong: '喀麥隆',
-        description: '紅-黃-綠橫條紋帶黑星'
-      },
-      {
-        id: 5,
-        flag: { colors: ['#002868', '#ffffff', '#002868'], type: 'horizontal' },
-        correct: '波札那',
-        wrong: '納米比亞',
-        description: '藍-白-藍橫條紋'
-      },
-      {
-        id: 6,
-        flag: { colors: ['#007A4D', '#FFD100', '#DE3908'], type: 'horizontal' },
-        correct: '喀麥隆',
-        wrong: '塞內加爾',
-        description: '綠-紅-黃直條紋帶星'
-      },
-      {
-        id: 7,
-        flag: { colors: ['#00853F', '#FFD100', '#00853F'], type: 'horizontal', star: true },
-        correct: '塞內加爾',
-        wrong: '馬利',
-        description: '綠-黃-紅直條紋帶星'
-      },
-      {
-        id: 8,
-        flag: { colors: ['#002395', '#ffffff', '#CE1126'], type: 'horizontal' },
-        correct: '賴比瑞亞',
-        wrong: '獅子山',
-        description: '藍-白-紅條紋帶星'
-      },
-      {
-        id: 9,
-        flag: { colors: ['#EF2B2D', '#ffffff', '#002F6C'], type: 'horizontal' },
-        correct: '尚比亞',
-        wrong: '辛巴威',
-        description: '綠底帶橙老鷹'
-      },
-      {
-        id: 10,
-        flag: { colors: ['#319400', '#000000', '#FFD100'], type: 'horizontal', bird: true },
-        correct: '辛巴威',
-        wrong: '莫三比克',
-        description: '綠-黃-紅黑帶鳥'
-      }
+    // 非洲國家國旗資料
+    const africanFlags = [
+      { country: '埃及', flag: 'https://flagcdn.com/w320/eg.png', emoji: '🇪🇬' },
+      { country: '南非', flag: 'https://flagcdn.com/w320/za.png', emoji: '🇿🇦' },
+      { country: '奈及利亞', flag: 'https://flagcdn.com/w320/ng.png', emoji: '🇳🇬' },
+      { country: '肯亞', flag: 'https://flagcdn.com/w320/ke.png', emoji: '🇰🇪' },
+      { country: '衣索比亞', flag: 'https://flagcdn.com/w320/et.png', emoji: '🇪🇹' },
+      { country: '摩洛哥', flag: 'https://flagcdn.com/w320/ma.png', emoji: '🇲🇦' },
+      { country: '阿爾及利亞', flag: 'https://flagcdn.com/w320/dz.png', emoji: '🇩🇿' },
+      { country: '突尼西亞', flag: 'https://flagcdn.com/w320/tn.png', emoji: '🇹🇳' },
+      { country: '加納', flag: 'https://flagcdn.com/w320/gh.png', emoji: '🇬🇭' },
+      { country: '烏干達', flag: 'https://flagcdn.com/w320/ug.png', emoji: '🇺🇬' },
+      { country: '坦尚尼亞', flag: 'https://flagcdn.com/w320/tz.png', emoji: '🇹🇿' },
+      { country: '塞內加爾', flag: 'https://flagcdn.com/w320/sn.png', emoji: '🇸🇳' },
+      { country: '辛巴威', flag: 'https://flagcdn.com/w320/zw.png', emoji: '🇿🇼' },
+      { country: '喀麥隆', flag: 'https://flagcdn.com/w320/cm.png', emoji: '🇨🇲' },
+      { country: '象牙海岸', flag: 'https://flagcdn.com/w320/ci.png', emoji: '🇨🇮' },
+      { country: '安哥拉', flag: 'https://flagcdn.com/w320/ao.png', emoji: '🇦🇴' },
+      { country: '馬達加斯加', flag: 'https://flagcdn.com/w320/mg.png', emoji: '🇲🇬' },
+      { country: '馬利', flag: 'https://flagcdn.com/w320/ml.png', emoji: '🇲🇱' },
+      { country: '尚比亞', flag: 'https://flagcdn.com/w320/zm.png', emoji: '🇿🇲' },
+      { country: '索馬利亞', flag: 'https://flagcdn.com/w320/so.png', emoji: '🇸🇴' }
     ];
 
-    // 遊戲狀態
     let currentQuestionIndex = 0;
-    let correctCount = 0;
+    let correctAnswerIndex = 0;
+    let timerInterval;
     let timeLeft = 10;
-    let timerInterval = null;
-    let selectedQuestions = [];
+    let selectedAnswerIndex = null;
+    let currentQuestions = [];
 
-    // 初始化
-    function init() {
-      // 顯示規則說明，等待玩家點擊開始
-      document.getElementById('rules-section').style.display = 'block';
-      document.getElementById('game-area').style.display = 'none';
-    }
-
-    // 從規則頁面開始遊戲
+    // 開始遊戲
     function startGameFromRules() {
       document.getElementById('rules-section').style.display = 'none';
       document.getElementById('game-area').style.display = 'block';
-      startGame();
+      initGame();
     }
 
-    // 開始遊戲
-    function startGame() {
-      // 從題庫隨機選 5 題
-      selectedQuestions = getRandomQuestions(questionBank, 5);
+    // 初始化遊戲
+    function initGame() {
       currentQuestionIndex = 0;
-      correctCount = 0;
-      showQuestion();
+      currentQuestions = selectRandomQuestions(8);
+      loadQuestion();
     }
 
-    // 隨機選題
-    function getRandomQuestions(bank, count) {
-      const shuffled = [...bank].sort(() => Math.random() - 0.5);
+    // 隨機選擇 8 題
+    function selectRandomQuestions(count) {
+      const shuffled = [...africanFlags].sort(() => Math.random() - 0.5);
       return shuffled.slice(0, count);
     }
 
-    // 顯示題目
-    function showQuestion() {
-      if (currentQuestionIndex >= selectedQuestions.length) {
-        // 通關
+    // 載入題目
+    function loadQuestion() {
+      if (currentQuestionIndex >= currentQuestions.length) {
         completeChallenge();
         return;
       }
 
-      const question = selectedQuestions[currentQuestionIndex];
+      // 重置狀態
+      selectedAnswerIndex = null;
+      timeLeft = 10;
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('feedback').className = 'feedback';
+      document.getElementById('next-btn').style.display = 'none';
+      document.getElementById('show-answer-btn').style.display = 'none';
+
+      // 重置選項卡片樣式
+      const optionLeft = document.getElementById('option-left');
+      const optionRight = document.getElementById('option-right');
+      optionLeft.className = 'option-card';
+      optionRight.className = 'option-card';
 
       // 更新進度
       document.getElementById('current-question').textContent = currentQuestionIndex + 1;
 
-      // 渲染國旗
-      renderFlag(question.flag);
+      // 取得當前題目
+      const question = currentQuestions[currentQuestionIndex];
 
-      // 隨機排列選項
-      const options = [question.correct, question.wrong].sort(() => Math.random() - 0.5);
-      document.getElementById('option-1').textContent = options[0];
-      document.getElementById('option-2').textContent = options[1];
-      document.getElementById('option-1').disabled = false;
-      document.getElementById('option-2').disabled = false;
+      // 隨機選擇另一個國家作為錯誤選項
+      let wrongOption;
+      do {
+        wrongOption = africanFlags[Math.floor(Math.random() * africanFlags.length)];
+      } while (wrongOption.country === question.country);
 
-      // 隱藏回饋與按鈕
-      document.getElementById('feedback').classList.remove('show', 'correct', 'wrong');
-      document.getElementById('action-buttons').classList.remove('show');
+      // 隨機決定正確答案在左邊還是右邊
+      correctAnswerIndex = Math.random() < 0.5 ? 0 : 1;
+      const options = correctAnswerIndex === 0
+        ? [question.country, wrongOption.country]
+        : [wrongOption.country, question.country];
 
-      // 重置計時器
-      timeLeft = 10;
-      updateTimer();
+      // 顯示國旗和選項
+      const flagDisplay = document.getElementById('flag-display');
+      flagDisplay.innerHTML = `<img src="${question.flag}" alt="${question.country}的國旗" />`;
+      document.getElementById('option-text-0').textContent = options[0];
+      document.getElementById('option-text-1').textContent = options[1];
+
+      // 啟動計時器
       startTimer();
     }
 
-    // 渲染國旗（簡化版）
-    function renderFlag(flagData) {
-      const flagDisplay = document.getElementById('flag-display');
-      flagDisplay.innerHTML = '';
-
-      if (flagData.type === 'horizontal') {
-        flagData.colors.forEach(color => {
-          const stripe = document.createElement('div');
-          stripe.style.backgroundColor = color;
-          stripe.style.flex = '1';
-          flagDisplay.appendChild(stripe);
-        });
-        flagDisplay.style.display = 'flex';
-        flagDisplay.style.flexDirection = 'column';
-      }
-
-      // 加上標記（星星、盾牌等）
-      if (flagData.star) {
-        const star = document.createElement('div');
-        star.textContent = '⭐';
-        star.style.position = 'absolute';
-        star.style.top = '50%';
-        star.style.left = '50%';
-        star.style.transform = 'translate(-50%, -50%)';
-        star.style.fontSize = '3rem';
-        flagDisplay.appendChild(star);
-      }
-
-      if (flagData.shield) {
-        const shield = document.createElement('div');
-        shield.textContent = '🛡️';
-        shield.style.position = 'absolute';
-        shield.style.top = '50%';
-        shield.style.left = '50%';
-        shield.style.transform = 'translate(-50%, -50%)';
-        shield.style.fontSize = '3rem';
-        flagDisplay.appendChild(shield);
-      }
-
-      if (flagData.bird) {
-        const bird = document.createElement('div');
-        bird.textContent = '🦅';
-        bird.style.position = 'absolute';
-        bird.style.top = '20%';
-        bird.style.left = '20%';
-        bird.style.fontSize = '2rem';
-        flagDisplay.appendChild(bird);
-      }
-    }
-
-    // 計時器
+    // 啟動計時器
     function startTimer() {
-      if (timerInterval) clearInterval(timerInterval);
+      const timerElement = document.getElementById('timer');
+      const timeLeftSpan = document.getElementById('time-left');
 
+      timerElement.classList.remove('warning');
+      timeLeftSpan.textContent = timeLeft;
+
+      clearInterval(timerInterval);
       timerInterval = setInterval(() => {
         timeLeft--;
-        updateTimer();
+        timeLeftSpan.textContent = timeLeft;
+
+        if (timeLeft <= 3) {
+          timerElement.classList.add('warning');
+        }
 
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
-          timeUp();
+          handleTimeout();
         }
       }, 1000);
     }
 
-    function updateTimer() {
-      const timerElem = document.getElementById('timer');
-      document.getElementById('time-left').textContent = timeLeft;
+    // 處理超時
+    function handleTimeout() {
+      // 禁用選項
+      document.getElementById('option-left').classList.add('disabled');
+      document.getElementById('option-right').classList.add('disabled');
 
-      if (timeLeft <= 3) {
-        timerElem.classList.add('warning');
-      } else {
-        timerElem.classList.remove('warning');
-      }
-    }
+      // 顯示超時訊息
+      const feedbackElement = document.getElementById('feedback');
+      feedbackElement.textContent = '⏰ 時間到！可以查看答案或直接進入下一題';
+      feedbackElement.className = 'feedback timeout';
 
-    // 時間到
-    function timeUp() {
-      const question = selectedQuestions[currentQuestionIndex];
-      showFeedback(false, question.correct);
-      disableOptions();
+      // 顯示查看答案按鈕和下一題按鈕
+      document.getElementById('show-answer-btn').style.display = 'inline-block';
+      document.getElementById('next-btn').style.display = 'inline-block';
     }
 
     // 選擇答案
-    function selectAnswer(optionIndex) {
+    function selectAnswer(index) {
+      if (selectedAnswerIndex !== null || timeLeft <= 0) return;
+
+      selectedAnswerIndex = index;
       clearInterval(timerInterval);
 
-      const question = selectedQuestions[currentQuestionIndex];
-      const selectedAnswer = document.getElementById(`option-${optionIndex + 1}`).textContent;
-      const isCorrect = selectedAnswer === question.correct;
+      // 標記選中的卡片
+      const selectedCard = index === 0 ? document.getElementById('option-left') : document.getElementById('option-right');
+      selectedCard.classList.add('selected');
 
-      showFeedback(isCorrect, question.correct);
-      disableOptions();
+      // 禁用選項
+      document.getElementById('option-left').classList.add('disabled');
+      document.getElementById('option-right').classList.add('disabled');
 
-      if (isCorrect) {
-        correctCount++;
-      }
+      // 檢查答案
+      checkAnswer();
     }
 
-    // 顯示回饋
-    function showFeedback(isCorrect, correctAnswer) {
-      const feedback = document.getElementById('feedback');
-      feedback.classList.add('show');
+    // 檢查答案
+    function checkAnswer() {
+      const feedbackElement = document.getElementById('feedback');
+      const optionLeft = document.getElementById('option-left');
+      const optionRight = document.getElementById('option-right');
 
-      if (isCorrect) {
-        feedback.classList.add('correct');
-        feedback.textContent = '✓ 答對了！';
+      if (selectedAnswerIndex === correctAnswerIndex) {
+        // 答對
+        feedbackElement.textContent = '✅ 答對了！太棒了！';
+        feedbackElement.className = 'feedback correct';
+
+        const correctCard = correctAnswerIndex === 0 ? optionLeft : optionRight;
+        correctCard.classList.remove('selected');
+        correctCard.classList.add('correct');
       } else {
-        feedback.classList.add('wrong');
-        feedback.textContent = `✗ 正確答案是：${correctAnswer}`;
+        // 答錯
+        feedbackElement.textContent = '❌ 答錯了！再接再厲！';
+        feedbackElement.className = 'feedback wrong';
+
+        const wrongCard = selectedAnswerIndex === 0 ? optionLeft : optionRight;
+        wrongCard.classList.remove('selected');
+        wrongCard.classList.add('wrong');
+
+        // 顯示查看答案按鈕
+        document.getElementById('show-answer-btn').style.display = 'inline-block';
       }
 
-      document.getElementById('action-buttons').classList.add('show');
+      // 無論答對答錯都顯示下一題按鈕
+      document.getElementById('next-btn').style.display = 'inline-block';
     }
 
-    // 禁用選項
-    function disableOptions() {
-      document.getElementById('option-1').disabled = true;
-      document.getElementById('option-2').disabled = true;
+    // 顯示正確答案
+    function showAnswer() {
+      const correctCard = correctAnswerIndex === 0 ? document.getElementById('option-left') : document.getElementById('option-right');
+      correctCard.classList.add('correct');
+
+      // 隱藏查看答案按鈕
+      document.getElementById('show-answer-btn').style.display = 'none';
+
+      // 更新提示訊息
+      const feedbackElement = document.getElementById('feedback');
+      feedbackElement.textContent = '💡 正確答案已標示（綠色邊框）';
+      feedbackElement.className = 'feedback';
     }
 
     // 下一題
     function nextQuestion() {
       currentQuestionIndex++;
-      showQuestion();
+      loadQuestion();
     }
 
     // 重新開始
     function restartGame() {
-      currentQuestionIndex = 0;
-      correctCount = 0;
-      showQuestion();
+      clearInterval(timerInterval);
+      document.getElementById('rules-section').style.display = 'block';
+      document.getElementById('game-area').style.display = 'none';
     }
 
     // 完成挑戰
     function completeChallenge() {
       clearInterval(timerInterval);
 
-      // 檢查是否已經完成過
+      // 檢查是否已完成過
       const completed = getCompletedLocations();
-      const isAlreadyCompleted = completed.includes(LOCATION_KEY);
+      const isNew = !completed.includes(LOCATION_KEY);
 
-      if (!isAlreadyCompleted) {
-        // 第一次完成，記錄進度
-        markLocationCompleted(LOCATION_KEY);
-      }
+      if (isNew) {
+        // 顯示龍珠揭示動畫
+        document.getElementById('reveal-overlay').classList.add('show');
 
-      const ballCount = getDragonBallCount();
-
-      // 顯示訊息
-      if (isAlreadyCompleted) {
-        document.getElementById('success-message').textContent =
-          `恭喜通關！（龍珠已收集，目前共 ${ballCount} 顆）`;
+        // 2秒後顯示成功頁面
+        setTimeout(() => {
+          document.getElementById('reveal-overlay').classList.remove('show');
+          markLocationCompleted(LOCATION_KEY);
+          document.getElementById('success-overlay').classList.add('show');
+        }, 2000);
       } else {
-        document.getElementById('success-message').textContent =
-          `你成功取得了第 ${ballCount} 顆龍珠！`;
+        // 已完成過，直接顯示成功頁面
+        document.getElementById('success-overlay').classList.add('show');
       }
-
-      document.getElementById('success-overlay').classList.add('show');
     }
 
     // 返回地圖
     function goBack() {
       window.location.href = '../index.html';
     }
-
-    // 頁面載入時初始化
-    init();
   </script>
 
 </body>

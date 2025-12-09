@@ -304,6 +304,30 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
+    /* 冷笑話 Modal 樣式 */
+    #joke-modal .modal-content {
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 30px 20px;
+    }
+
+    .joke-image-container {
+      max-height: 80vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    #joke-image {
+      max-width: 100%;
+      max-height: 80vh;
+      height: auto;
+      width: auto;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
     /* 龍珠類型 Modal 特效 */
     #dragonball-type-modal {
       background: rgba(0, 0, 0, 0.95);
@@ -556,11 +580,12 @@
 	<p>
         這次冒險共有 11 位小勇士，大家同心協力收集七顆真正的龍珠，才能召喚神龍並獲得最終的寶藏！<br><br>
 		
-		每一回合由隊伍推派一人抽取地點卡，依照指示前往挑戰。卡片可能是：<br>
-		🟡 <strong>真龍珠任務</strong>：需要全隊合作才能過關。<br>
-		⚪ <strong>假龍珠任務</strong>：會出現冷笑話謎語，需要一起解答。<br><br>
+		每一回合由隊伍推派一人抽取一顆龍珠，依照龍珠上的指示前往挑戰。挑戰可能是:<br>
+		   <strong>-遊戲任務</strong>：需要全隊合作才能過關。<br>
+		   <strong>-猜謎任務</strong>：需要找出正確解答。<br>
 		
-		每一顆龍珠都藏有一道<strong>神祕提示</strong>。集滿七顆後，請將所有提示組合起來，破解最終的咒語，才能真正召喚神龍！
+		破關後才會得知抽出的龍珠是真龍珠🟡或假龍珠⚪。 <br><br>
+		每一顆龍珠藏有一道<strong>神祕提示</strong>，請將所有提示組合起來，破解最終的咒語，才能真正召喚神龍！
 		若隊伍在探索途中提前抽齊七顆真龍珠，將會自動獲得所有剩餘的龍珠提示。<br><br>
     </p>
 	
@@ -599,6 +624,9 @@
   <div class="modal" id="joke-modal">
     <div class="modal-content">
       <h2 id="joke-title">假龍珠！</h2>
+      <div class="joke-image-container">
+        <img id="joke-image" src="" alt="圖片">
+      </div>
       <div class="question" id="joke-question">
         這裡是冷笑話或謎語的內容...
       </div>
@@ -607,6 +635,15 @@
       </div>
       <button class="modal-btn" id="show-answer-btn" onclick="showAnswer()">看答案</button>
       <button class="modal-btn" onclick="closeJokeModal()">返回地圖</button>
+    </div>
+  </div>
+
+  <!-- 假龍珠揭示 Overlay -->
+  <div class="success-overlay" id="fake-reveal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 10000; justify-content: center; align-items: center;">
+    <div class="success-content" style="text-align: center; animation: dragonBallReveal 1.2s ease;">
+      <div style="font-size: 8rem; margin-bottom: 20px; animation: iconGlow 2s ease-in-out infinite;">⚪</div>
+      <h2 style="font-size: 2.5rem; color: #ffd700; margin-bottom: 20px; animation: fadeInUp 1s ease 0.3s backwards;">假龍珠任務完成！</h2>
+      <p style="font-size: 1.3rem; animation: fadeInUp 1s ease 0.6s backwards;">這是一顆假龍珠</p>
     </div>
   </div>
 
@@ -634,22 +671,27 @@
       { key: 'pacific', name: '太平洋', type: 'real', file: 'games/pacific.html', emoji: '🌊' },
       { key: 'indian-ocean', name: '印度洋', type: 'real', file: 'games/indian-ocean.html', emoji: '🌊' },
 
-      // 冷笑話地點（5個）
+      // 冷笑話地點（5個）- 使用本地圖片
       { key: 'antarctica', name: '南極洲', type: 'joke', emoji: '❄️',
-        question: '為什麼企鵝不會飛？',
-        answer: '因為牠們太胖了！' },
-      { key: 'oceania', name: '大洋洲', type: 'joke', emoji: '🏝️',
-        question: '袋鼠為什麼有袋子？',
-        answer: '因為牠們沒口袋可以放東西！' },
+        image: 'images/jokes/antarctica.jpg',
+        question: '看圖猜成語？',
+        answer: '猩不載菸 = 心不在焉' },
+      { key: 'caribbean', name: '大洋洲', type: 'joke', emoji: '🏝️',
+        image: 'images/jokes/oceania.jpg',
+        question: '請猜一位歷史人物？',
+        answer: '拿破輪 = 拿破崙' },
       { key: 'atlantic', name: '大西洋', type: 'joke', emoji: '🌊',
+        image: 'images/jokes/atlantic.svg',
         question: '為什麼魚不會溺水？',
         answer: '因為牠們會游泳！' },
-      { key: 'arctic', name: '北冰洋', type: 'joke', emoji: '🧊',
+      { key: 'arctic', name: '北極', type: 'joke', emoji: '🧊',
+        image: 'images/jokes/arctic.svg',
         question: '北極熊為什麼是白色的？',
         answer: '因為黑色的太容易被發現了！' },
-      { key: 'southern', name: '南冰洋', type: 'joke', emoji: '🧊',
-        question: '冰山為什麼只露出一角？',
-        answer: '因為太害羞了！' }
+      { key: 'mediterranean', name: '地中海', type: 'joke', emoji: '⛵',
+        image: 'images/jokes/mediterranean.svg',
+        question: '為什麼地中海不會結冰？',
+        answer: '因為它太溫暖了！' }
     ];
 
     // 初始化
@@ -705,8 +747,13 @@
 
         // 點擊事件
         card.addEventListener('click', () => {
-          // 先顯示真假龍珠動畫
-          showDragonBallTypeAnimation(location);
+          currentLocation = location;
+          // 直接進入關卡，不顯示真假龍珠動畫
+          if (location.type === 'real') {
+            window.location.href = location.file;
+          } else {
+            showJokeModal(location);
+          }
         });
 
         grid.appendChild(card);
@@ -765,6 +812,7 @@
     // 顯示冷笑話 Modal
     function showJokeModal(location) {
       document.getElementById('joke-title').textContent = `${location.emoji} ${location.name}`;
+      document.getElementById('joke-image').src = location.image || '';
       document.getElementById('joke-question').textContent = location.question;
       document.getElementById('joke-answer').textContent = location.answer;
       document.getElementById('joke-answer').classList.remove('show');
@@ -786,13 +834,21 @@
       if (currentLocation && currentLocation.type === 'joke') {
         const completed = getCompletedLocations();
 
-        // 如果還沒完成，標記為完成
+        // 如果還沒完成，顯示揭示動畫後標記為完成
         if (!completed.includes(currentLocation.key)) {
-          completed.push(currentLocation.key);
-          localStorage.setItem('completedLocations', JSON.stringify(completed));
+          // 顯示假龍珠揭示動畫
+          document.getElementById('fake-reveal-overlay').style.display = 'flex';
 
-          // 重新渲染卡片以顯示完成狀態（顯示⚪圖示）
-          renderCards();
+          // 2秒後隱藏揭示動畫，標記完成並重新渲染卡片
+          setTimeout(() => {
+            document.getElementById('fake-reveal-overlay').style.display = 'none';
+
+            completed.push(currentLocation.key);
+            localStorage.setItem('completedLocations', JSON.stringify(completed));
+
+            // 重新渲染卡片以顯示完成狀態（顯示⚪圖示）
+            renderCards();
+          }, 2000);
         }
       }
     }
