@@ -642,8 +642,8 @@
   <div class="success-overlay" id="fake-reveal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 10000; justify-content: center; align-items: center;">
     <div class="success-content" style="text-align: center; animation: dragonBallReveal 1.2s ease;">
       <div style="font-size: 8rem; margin-bottom: 20px; animation: iconGlow 2s ease-in-out infinite;">⚪</div>
-      <h2 style="font-size: 2.5rem; color: #ffd700; margin-bottom: 20px; animation: fadeInUp 1s ease 0.3s backwards;">假龍珠任務完成！</h2>
-      <p style="font-size: 1.3rem; animation: fadeInUp 1s ease 0.6s backwards;">這是一顆假龍珠</p>
+      <h2 style="font-size: 2.5rem; color: #ffd700; margin-bottom: 20px; animation: fadeInUp 1s ease 0.3s backwards;">任務完成！</h2>
+      <p style="font-size: 1.3rem; animation: fadeInUp 1s ease 0.6s backwards;">咦!? 這裡沒有龍珠:(</p>
     </div>
   </div>
 
@@ -662,36 +662,37 @@
   <script>
     // 地點資料
     const locations = [
-      // 真關卡（7個）
-      { key: 'asia', name: '亞洲', type: 'real', file: 'games/asia.html', emoji: '🌏' },
-      { key: 'africa', name: '非洲', type: 'real', file: 'games/africa.html', emoji: '🌍' },
-      { key: 'south-america', name: '南美洲', type: 'real', file: 'games/south-america.html', emoji: '🌎' },
-      { key: 'europe', name: '歐洲', type: 'real', file: 'games/europe.html', emoji: '🌍' },
-      { key: 'north-america', name: '北美洲', type: 'real', file: 'games/north-america.html', emoji: '🌎' },
-      { key: 'pacific', name: '太平洋', type: 'real', file: 'games/pacific.html', emoji: '🌊' },
-      { key: 'indian-ocean', name: '印度洋', type: 'real', file: 'games/indian-ocean.html', emoji: '🌊' },
-
-      // 冷笑話地點（5個）- 使用本地圖片
-      { key: 'antarctica', name: '南極洲', type: 'joke', emoji: '❄️',
-        image: 'images/jokes/antarctica.jpg',
-        question: '看圖猜成語？',
-        answer: '猩不載菸 = 心不在焉' },
-      { key: 'caribbean', name: '大洋洲', type: 'joke', emoji: '🏝️',
-        image: 'images/jokes/oceania.jpg',
-        question: '請猜一位歷史人物？',
-        answer: '拿破輪 = 拿破崙' },
-      { key: 'atlantic', name: '大西洋', type: 'joke', emoji: '🌊',
-        image: 'images/jokes/atlantic.svg',
-        question: '為什麼魚不會溺水？',
-        answer: '因為牠們會游泳！' },
       { key: 'arctic', name: '北極', type: 'joke', emoji: '🧊',
         image: 'images/jokes/arctic.svg',
         question: '北極熊為什麼是白色的？',
         answer: '因為黑色的太容易被發現了！' },
-      { key: 'mediterranean', name: '地中海', type: 'joke', emoji: '⛵',
-        image: 'images/jokes/mediterranean.svg',
-        question: '為什麼地中海不會結冰？',
-        answer: '因為它太溫暖了！' }
+	  { key: 'north-america', name: '北美洲', type: 'real', file: 'games/north-america.html', emoji: '🌎' },
+	  { key: 'antarctica', name: '南極洲', type: 'joke', emoji: '❄️',
+        image: 'images/jokes/antarctica.jpg',
+        question: '看圖猜成語？',
+        answer: '猩不載菸 = 心不在焉' },
+	  { key: 'europe', name: '歐洲', type: 'real', file: 'games/europe.html', emoji: '🌍' },
+	  { key: 'atlantic', name: '大西洋', type: 'joke', emoji: '🌊',
+        image: 'images/jokes/atlantic.svg',
+        question: '為什麼魚不會溺水？',
+        answer: '因為牠們會游泳！' },
+	  { key: 'asia', name: '亞洲', type: 'real', file: 'games/asia.html', emoji: '🌏' },
+      
+      { key: 'africa', name: '非洲', type: 'real', file: 'games/africa.html', emoji: '🌍' },
+      { key: 'pacific', name: '太平洋', type: 'real', file: 'games/pacific.html', emoji: '🌊' },
+      { key: 'indian-ocean', name: '印度洋', type: 'real', file: 'games/indian-ocean.html', emoji: '🌊' },
+
+      { key: 'caribbean', name: '大洋洲', type: 'joke', emoji: '🏝️',
+        image: 'images/jokes/oceania.jpg',
+        question: '請猜一位歷史人物？',
+        answer: '拿破輪 = 拿破崙' },
+	  { key: '', name: '', type: '', emoji: '',
+        image: '',
+        question: '',
+        answer: '' },
+      
+	 { key: 'south-america', name: '南美洲', type: 'real', file: 'games/south-america.html', emoji: '🌎' }
+
     ];
 
     // 初始化
