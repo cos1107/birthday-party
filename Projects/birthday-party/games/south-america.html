@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>南美洲 - 七顆龍珠·世界冒險</title>
+  <title>南美洲比手畫腳 - 七顆龍珠·世界冒險</title>
   <style>
     * {
       margin: 0;
@@ -13,101 +13,402 @@
 
     body {
       font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
-      background: linear-gradient(135deg, #228B22 0%, #32CD32 100%);
+      background: linear-gradient(135deg, #228B22 0%, #32CD32 50%, #90EE90 100%);
       color: #fff;
       min-height: 100vh;
       padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* 裝飾性背景元素 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(0, 100, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(144, 238, 144, 0.1) 0%, transparent 50%);
+      animation: float 20s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(30px, -30px) rotate(5deg); }
+      66% { transform: translate(-20px, 20px) rotate(-5deg); }
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1200px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
+      animation: fadeInDown 0.6s ease;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .header h1 {
       font-size: 3rem;
-      margin-bottom: 10px;
-      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+      margin-bottom: 15px;
+      text-shadow: 0 0 30px rgba(255, 215, 0, 0.8),
+                   0 5px 10px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.3); }
     }
 
     .header p {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       color: #ffd700;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     }
 
-    .game-area {
-      background: rgba(255, 255, 255, 0.1);
-      border: 2px solid rgba(255, 215, 0, 0.5);
-      border-radius: 20px;
+    /* 規則說明區 */
+    .rules-section {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 3px solid rgba(255, 215, 0, 0.6);
+      border-radius: 25px;
       padding: 40px;
       margin-bottom: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      animation: fadeInUp 0.6s ease 0.2s backwards;
     }
 
-    .instructions {
-      background: rgba(255, 215, 0, 0.1);
-      border-left: 4px solid #ffd700;
-      padding: 20px;
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .rule-header {
+      text-align: center;
       margin-bottom: 30px;
-      border-radius: 5px;
     }
 
-    .instructions h2 {
+    .rule-header h2 {
+      font-size: 2rem;
       color: #ffd700;
       margin-bottom: 10px;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     }
 
-    .game-content {
-      min-height: 200px;
-      background: rgba(0, 0, 0, 0.2);
+    .rule-content {
+      font-size: 1.1rem;
+      line-height: 2;
+      margin-bottom: 20px;
+    }
+
+    .rule-content h3 {
+      color: #ffd700;
+      font-size: 1.4rem;
+      margin: 25px 0 15px 0;
+    }
+
+    .rule-content ul {
+      list-style: none;
+      padding-left: 10px;
+    }
+
+    .rule-content li {
+      margin-bottom: 10px;
+      padding-left: 25px;
+      position: relative;
+    }
+
+    .rule-content li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #ffd700;
+      font-size: 1.5rem;
+    }
+
+    .rule-highlight {
+      background: rgba(255, 215, 0, 0.2);
+      border-left: 5px solid #ffd700;
+      padding: 20px;
       border-radius: 10px;
-      padding: 30px;
+      margin: 20px 0;
+      font-weight: bold;
       text-align: center;
     }
 
-    .game-content h3 {
+    .rule-warning {
+      background: rgba(255, 100, 100, 0.2);
+      border-left: 5px solid #ff6b6b;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .rule-warning h4 {
+      color: #ff6b6b;
+      margin-bottom: 10px;
+    }
+
+    .rule-success {
+      background: rgba(76, 175, 80, 0.2);
+      border-left: 5px solid #4CAF50;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .start-game-btn {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin: 30px auto 0;
+      padding: 20px 40px;
       font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+      background: linear-gradient(45deg, #4CAF50, #45a049);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+      transition: all 0.3s ease;
+      animation: pulse-btn 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-btn {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .start-game-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(76, 175, 80, 0.6);
+    }
+
+    /* 遊戲區域 */
+    .game-area {
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* 頂部資訊欄 */
+    .game-info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       margin-bottom: 20px;
+      gap: 15px;
+    }
+
+    .progress-bar {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 215, 0, 0.5);
+      border-radius: 15px;
+      padding: 12px 30px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       color: #ffd700;
     }
 
-    .game-content p {
-      font-size: 1.1rem;
-      line-height: 1.8;
+    /* 題目區域 */
+    .question-section {
+      background: rgba(255, 255, 255, 0.95);
+      border: 4px solid rgba(255, 215, 0, 0.8);
+      border-radius: 25px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      margin-bottom: 30px;
+      text-align: center;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .question-title {
+      color: #228B22;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .animal-name {
+      color: #2e7d32;
+      font-size: 4rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .animal-english {
+      color: #4CAF50;
+      font-size: 1.8rem;
       margin-bottom: 20px;
     }
 
-    .button-group {
+    .animal-pronunciation {
+      color: #757575;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    /* 答對後的資訊區 */
+    .animal-info {
+      display: none;
+      background: rgba(255, 255, 255, 0.95);
+      border: 4px solid rgba(76, 175, 80, 0.8);
+      border-radius: 25px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      margin-bottom: 30px;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .animal-info.show {
+      display: block;
+    }
+
+    .animal-image {
+      width: 100%;
+      max-width: 400px;
+      height: 250px;
+      margin: 0 auto 25px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .animal-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .animal-facts {
+      text-align: left;
+      color: #333;
+    }
+
+    .animal-facts h3 {
+      color: #228B22;
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .animal-facts ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .animal-facts li {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      padding: 10px 0;
+      padding-left: 30px;
+      position: relative;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .animal-facts li:last-child {
+      border-bottom: none;
+    }
+
+    .animal-facts li::before {
+      content: '🌿';
+      position: absolute;
+      left: 0;
+      font-size: 1rem;
+    }
+
+    /* 動作按鈕區 */
+    .action-buttons {
       display: flex;
-      gap: 15px;
       justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
       flex-wrap: wrap;
     }
 
     .btn {
-      padding: 15px 40px;
-      font-size: 1.1rem;
+      padding: 18px 40px;
+      font-size: 1.2rem;
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      transition: all 0.3s ease;
       font-weight: bold;
+      transition: all 0.3s ease;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      min-width: 150px;
+    }
+
+    .btn-next {
+      background: linear-gradient(45deg, #2196F3, #1976D2);
+      color: white;
+    }
+
+    .btn-next:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(33, 150, 243, 0.5);
+    }
+
+    .btn-correct {
+      background: linear-gradient(45deg, #4CAF50, #45a049);
+      color: white;
+    }
+
+    .btn-correct:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(76, 175, 80, 0.5);
     }
 
     .btn-complete {
-      background: linear-gradient(45deg, #4CAF50, #45a049);
+      background: linear-gradient(45deg, #FF9800, #F57C00);
       color: white;
     }
 
     .btn-complete:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(76, 175, 80, 0.5);
+      box-shadow: 0 8px 20px rgba(255, 152, 0, 0.5);
     }
 
     .btn-back {
@@ -123,8 +424,10 @@
     .btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+      transform: none;
     }
 
+    /* 成功/揭示 Overlay */
     .success-overlay {
       display: none;
       position: fixed;
@@ -132,8 +435,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 1000;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 10000;
       justify-content: center;
       align-items: center;
       animation: fadeIn 0.3s ease;
@@ -148,27 +451,11 @@
       animation: bounceIn 0.6s ease;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
     @keyframes bounceIn {
       0% { transform: scale(0.3); opacity: 0; }
       50% { transform: scale(1.05); }
       70% { transform: scale(0.9); }
       100% { transform: scale(1); opacity: 1; }
-    }
-
-    .success-content .dragon-ball {
-      font-size: 10rem;
-      margin-bottom: 20px;
-      animation: glow 1.5s infinite;
-    }
-
-    @keyframes glow {
-      0%, 100% { filter: drop-shadow(0 0 20px #ffd700); }
-      50% { filter: drop-shadow(0 0 40px #ffd700); }
     }
 
     .success-content h2 {
@@ -180,20 +467,6 @@
     .success-content p {
       font-size: 1.3rem;
       margin-bottom: 30px;
-    }
-
-    .already-completed {
-      background: rgba(255, 215, 0, 0.2);
-      border: 2px solid #ffd700;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    .already-completed h3 {
-      color: #ffd700;
-      margin-bottom: 10px;
     }
 
     /* 龍珠揭示動畫 */
@@ -221,7 +494,7 @@
       }
     }
 
-    @keyframes fadeInUp {
+    @keyframes fadeInUp2 {
       from {
         opacity: 0;
         transform: translateY(30px);
@@ -232,21 +505,64 @@
       }
     }
 
+    /* 響應式設計 */
     @media (max-width: 768px) {
       .header h1 {
         font-size: 2rem;
       }
 
-      .game-area {
-        padding: 20px;
+      .rules-section {
+        padding: 25px 20px;
       }
 
-      .success-content .dragon-ball {
-        font-size: 6rem;
+      .rule-header h2 {
+        font-size: 1.5rem;
       }
 
-      .success-content h2 {
-        font-size: 1.8rem;
+      .rule-content {
+        font-size: 1rem;
+      }
+
+      .animal-name {
+        font-size: 3rem;
+      }
+
+      .animal-english {
+        font-size: 1.4rem;
+      }
+
+      .question-section {
+        padding: 30px 20px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      .animal-name {
+        font-size: 2.5rem;
+      }
+
+      .animal-english {
+        font-size: 1.2rem;
+      }
+
+      .animal-image {
+        height: 180px;
+      }
+
+      .animal-facts li {
+        font-size: 1rem;
       }
     }
   </style>
@@ -254,61 +570,102 @@
 <body>
 
   <div class="container">
+    <!-- 標題區 -->
     <div class="header">
-      <h1>🌎 南美洲</h1>
-      <p>真龍珠任務 #3</p>
+      <h1>🌎 南美洲比手畫腳</h1>
+      <p>認識南美洲的神奇動物！</p>
     </div>
 
-    <div class="game-area">
-      <div class="instructions">
-        <h2>📜 任務說明</h2>
-        <p>歡迎來到南美洲！這裡有世界上最大的熱帶雨林 - 亞馬遜雨林。探索這片綠色大陸，獲得龍珠！</p>
+    <!-- 規則說明區 -->
+    <div id="rules-section" class="rules-section">
+      <div class="rule-header">
+        <h2>🎭 南美洲動物比手畫腳 🦙</h2>
       </div>
 
-      <div class="already-completed" id="already-completed" style="display: none;">
-        <h3>✅ 你已經完成這個任務！</h3>
-        <p>這顆龍珠已經被收集了。</p>
-      </div>
-
-      <div class="game-content">
-        <h3>🎯 挑戰任務</h3>
-        <p>請在這裡放入您的遊戲內容，例如：</p>
-        <ul style="text-align: left; max-width: 500px; margin: 0 auto; font-size: 1.1rem; line-height: 2;">
-          <li>問答題</li>
-          <li>拼圖遊戲</li>
-          <li>團隊合作任務</li>
-          <li>解謎遊戲</li>
+      <div class="rule-content">
+        <h3>▶️ 遊戲進行方式</h3>
+        <ul>
+          <li>請<strong>幼幼組 3 位小朋友背對螢幕</strong>，準備猜題</li>
+          <li>螢幕上會出現「南美洲動物題目」</li>
+          <li>由其他 <strong>8 位小朋友依序輪流</strong>用<strong>動作或語言提示</strong>，來幫助幼幼組小朋友猜答案</li>
+          <li>猜對後，換下一位比手畫腳者與新題目</li>
         </ul>
-        <p style="margin-top: 20px; color: #ffd700;">
-          ⚠️ 這是範例內容，請根據您的需求自訂遊戲玩法！
+      </div>
+
+      <div class="rule-warning">
+        <h4>⚠️ 重要規則（一定要遵守！）</h4>
+        <ul>
+          <li>✅ <strong>可以說話提示</strong></li>
+          <li>❌ <strong>不可以說出題目中出現的任何字</strong></li>
+          <li>如果不小心說到題目裡的字，該題直接失敗，換下一題重新開始</li>
+        </ul>
+      </div>
+
+      <div class="rule-success">
+        <h4>🏆 過關條件</h4>
+        <p style="font-size: 1.2rem; margin-top: 10px;">
+          8 位小朋友出的題目，<strong>全部都成功讓幼幼組小朋友猜對</strong>，<br>
+          就成功通過南美洲關卡！
         </p>
       </div>
 
-      <div class="button-group" style="margin-top: 30px;">
-        <button class="btn btn-complete" id="complete-btn" onclick="completeTask()">
-          🟡 完成任務
-        </button>
-        <button class="btn btn-back" onclick="goBack()">
-          🗺️ 返回地圖
-        </button>
+      <button class="start-game-btn" onclick="startGameFromRules()">🚀 開始挑戰</button>
+    </div>
+
+    <!-- 遊戲區域 -->
+    <div class="game-area" id="game-area" style="display: none;">
+      <!-- 頂部資訊欄 -->
+      <div class="game-info">
+        <div class="progress-bar">
+          題目進度：<span id="current-question">1</span> / 8
+        </div>
+      </div>
+
+      <!-- 題目區域 -->
+      <div class="question-section" id="question-section">
+        <div class="question-title">🎯 請比手畫腳讓幼幼組猜這個動物：</div>
+        <div class="animal-name" id="animal-name">水豚</div>
+        <div class="animal-pronunciation" id="animal-pronunciation">（豚 ㄊㄨㄣˊ）</div>
+        <div class="animal-english" id="animal-english">Capybara</div>
+      </div>
+
+      <!-- 答對後的資訊區 -->
+      <div class="animal-info" id="animal-info">
+        <div class="animal-image" id="animal-image">
+          <img src="" alt="動物圖片" id="animal-img">
+        </div>
+        <div class="animal-facts">
+          <h3 id="info-title">🌿 小知識補充</h3>
+          <ul id="animal-facts-list">
+          </ul>
+        </div>
+      </div>
+
+      <!-- 動作按鈕 -->
+      <div class="action-buttons">
+        <button class="btn btn-next" id="next-btn" onclick="nextQuestion()">➡️ 下一題</button>
+        <button class="btn btn-correct" id="correct-btn" onclick="showCorrectInfo()">✅ 答對了</button>
+        <button class="btn btn-complete" id="complete-btn" onclick="completeChallenge()">🏆 破關</button>
+        <button class="btn btn-back" onclick="goBack()">🗺️ 返回地圖</button>
       </div>
     </div>
   </div>
 
   <!-- 龍珠揭示 Overlay -->
-  <div class="success-overlay" id="reveal-overlay" style="display: none;">
+  <div class="success-overlay" id="reveal-overlay">
     <div class="success-content" style="animation: dragonBallReveal 1.2s ease;">
       <div style="font-size: 8rem; margin-bottom: 20px; animation: iconGlow 2s ease-in-out infinite;">🟡</div>
-      <h2 style="animation: fadeInUp 1s ease 0.3s backwards;">真龍珠任務完成！</h2>
-      <p style="animation: fadeInUp 1s ease 0.6s backwards;">你獲得了一顆真龍珠</p>
+      <h2 style="animation: fadeInUp2 1s ease 0.3s backwards;">真龍珠任務完成！</h2>
+      <p style="animation: fadeInUp2 1s ease 0.6s backwards;">你獲得了一顆真龍珠</p>
     </div>
   </div>
 
+  <!-- 成功完成 Overlay -->
   <div class="success-overlay" id="success-overlay">
     <div class="success-content">
-      <div class="dragon-ball">🟡</div>
-      <h2>恭喜！獲得龍珠！</h2>
-      <p>你已成功完成南美洲的挑戰</p>
+      <div style="font-size: 10rem; margin-bottom: 20px; animation: iconGlow 2s ease-in-out infinite;">🟡</div>
+      <h2>恭喜！挑戰成功！</h2>
+      <p>你們成功完成南美洲動物比手畫腳挑戰！</p>
       <button class="btn btn-back" onclick="goBack()">返回地圖</button>
     </div>
   </div>
@@ -318,38 +675,330 @@
   <script>
     const LOCATION_KEY = 'south-america';
 
-    function init() {
-      const completed = getCompletedLocations();
-      if (completed.includes(LOCATION_KEY)) {
-        document.getElementById('already-completed').style.display = 'block';
-        document.getElementById('complete-btn').disabled = true;
+    // 南美洲動物題庫
+    const animals = [
+      {
+        id: 1,
+        name: '水豚',
+        pronunciation: '（豚 ㄊㄨㄣˊ）',
+        english: 'Capybara',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Capybara_%28Hydrochoerus_hydrochaeris%29.JPG/1280px-Capybara_%28Hydrochoerus_hydrochaeris%29.JPG',
+        facts: [
+          '世界上最大的齧齒動物',
+          '喜歡泡水、游泳',
+          '個性溫和，愛和其他動物一起玩'
+        ]
+      },
+      {
+        id: 2,
+        name: '子彈蟻',
+        pronunciation: '',
+        english: 'Bullet Ant',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Paraponera_clavata.jpg/1280px-Paraponera_clavata.jpg',
+        facts: [
+          '身體小，但很勇敢',
+          '咬人非常非常痛',
+          '住在熱帶雨林'
+        ]
+      },
+      {
+        id: 3,
+        name: '羊駝',
+        pronunciation: '',
+        english: 'Alpaca',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Alpaca_%2831562329701%29.jpg/1280px-Alpaca_%2831562329701%29.jpg',
+        facts: [
+          '看起來像在微笑',
+          '住在高山，不怕冷',
+          '毛可以做成衣服'
+        ]
+      },
+      {
+        id: 4,
+        name: '箭毒蛙',
+        pronunciation: '',
+        english: 'Poison Dart Frog',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Dendrobates_azureus_%28Dendrobates_tinctorius%29_Edit.jpg/1280px-Dendrobates_azureus_%28Dendrobates_tinctorius%29_Edit.jpg',
+        facts: [
+          '顏色很亮，提醒大家不要碰',
+          '毒液強，原住民會把它塗在吹箭上'
+        ]
+      },
+      {
+        id: 5,
+        name: '安地斯神鷹',
+        pronunciation: '',
+        english: 'Andean Condor',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Vultur_gryphus_-Dou%C3%A9-la-Fontaine_Zoo%2C_France-8a_%281%29.jpg/1280px-Vultur_gryphus_-Dou%C3%A9-la-Fontaine_Zoo%2C_France-8a_%281%29.jpg',
+        facts: [
+          '翅膀張開像一架飛機',
+          '飛得很高、很久',
+          '幫大自然清理垃圾'
+        ]
+      },
+      {
+        id: 6,
+        name: '海克力士兜蟲',
+        pronunciation: '（兜 ㄉㄡ）',
+        english: 'Hercules Beetle',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Dynastes_hercules_ecuatorianus_MHNT.jpg/1280px-Dynastes_hercules_ecuatorianus_MHNT.jpg',
+        facts: [
+          '世界最長的甲蟲',
+          '頭上有大角，像超級英雄'
+        ]
+      },
+      {
+        id: 7,
+        name: '海鬣蜥',
+        pronunciation: '（鬣 ㄌㄧㄝˋ）',
+        english: 'Marine Iguana',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Amblyrhynchus_cristatus_%28Gal%C3%A1pagos_marine_iguana%29_-_Isla_Fernandina%2C_Gal%C3%A1pagos_2010.jpg/1280px-Amblyrhynchus_cristatus_%28Gal%C3%A1pagos_marine_iguana%29_-_Isla_Fernandina%2C_Gal%C3%A1pagos_2010.jpg',
+        facts: [
+          '世界唯一會游泳的蜥蜴',
+          '吃海藻',
+          '常在岩石上曬太陽'
+        ]
+      },
+      {
+        id: 8,
+        name: '麝雉',
+        pronunciation: '（麝 ㄕㄜˋ）',
+        english: 'Hoatzin',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Opisthocomus_hoazin_-_Orinoco_Delta%2C_Venezuela.jpg/1280px-Opisthocomus_hoazin_-_Orinoco_Delta%2C_Venezuela.jpg',
+        facts: [
+          '保有始祖鳥特徵',
+          '身體有麝香味又稱臭鳥'
+        ]
+      },
+      {
+        id: 9,
+        name: '美洲豹',
+        pronunciation: '',
+        english: 'Jaguar',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Standing_jaguar.jpg/1280px-Standing_jaguar.jpg',
+        facts: [
+          '雨林裡的大貓',
+          '跑得快、力氣大',
+          '很會游泳'
+        ]
+      },
+      {
+        id: 10,
+        name: '樹懶',
+        pronunciation: '',
+        english: 'Sloth',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Choloepus_didactylus_-_Jardim_Zool%C3%B3gico_de_Bras%C3%ADlia_-_DSC09862.JPG/1280px-Choloepus_didactylus_-_Jardim_Zool%C3%B3gico_de_Bras%C3%ADlia_-_DSC09862.JPG',
+        facts: [
+          '動作超慢',
+          '一整天都在樹上',
+          '看起來很愛睡覺'
+        ]
+      },
+      {
+        id: 11,
+        name: '巨嘴鳥',
+        pronunciation: '',
+        english: 'Toucan',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ramphastos_sulfuratus_-Belize_Zoo-6a-2c.jpg/1280px-Ramphastos_sulfuratus_-Belize_Zoo-6a-2c.jpg',
+        facts: [
+          '嘴巴又大又彩色',
+          '喜歡吃水果',
+          '是雨林裡的明星'
+        ]
+      },
+      {
+        id: 12,
+        name: '綠水蚺',
+        pronunciation: '',
+        english: 'Green Anaconda',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Sucuri_verde.jpg/1280px-Sucuri_verde.jpg',
+        facts: [
+          '世界上最重的蛇',
+          '喜歡住在水邊',
+          '力氣非常大'
+        ]
+      },
+      {
+        id: 13,
+        name: '粉紅河豚',
+        pronunciation: '（豚 ㄊㄨㄣˊ）',
+        english: 'Amazon River Dolphin',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Amazon_river_dolphin.jpg/1280px-Amazon_river_dolphin.jpg',
+        facts: [
+          '身體是粉紅色的',
+          '住在亞馬遜河',
+          '非常聰明'
+        ]
+      },
+      {
+        id: 14,
+        name: '巴西巨蜥',
+        pronunciation: '',
+        english: 'Tegu Lizard',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Tupinambis_teguixin._Lagarto_tegu._-_Flickr_-_Dick_Culbert.jpg/1280px-Tupinambis_teguixin._Lagarto_tegu._-_Flickr_-_Dick_Culbert.jpg',
+        facts: [
+          '南美最大的蜥蜴之一',
+          '很聰明',
+          '什麼都吃'
+        ]
+      },
+      {
+        id: 15,
+        name: '原駝',
+        pronunciation: '',
+        english: 'Guanaco',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Guanaco_09.24_%28cropped%29.jpg/1280px-Guanaco_09.24_%28cropped%29.jpg',
+        facts: [
+          '羊駝的野生親戚',
+          '跑得很快',
+          '住在草原和山區'
+        ]
+      },
+      {
+        id: 16,
+        name: '藍閃蝶',
+        pronunciation: '',
+        english: 'Morpho Butterfly',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Morpho_menelaus_huebneri_MHNT_Male.jpg/1280px-Morpho_menelaus_huebneri_MHNT_Male.jpg',
+        facts: [
+          '翅膀會閃亮亮的藍光',
+          '飛起來像小精靈',
+          '住在雨林'
+        ]
       }
+    ];
+
+    let currentQuestionIndex = 0;
+    let selectedQuestions = [];
+    let isShowingInfo = false;
+
+    // 開始遊戲
+    function startGameFromRules() {
+      document.getElementById('rules-section').style.display = 'none';
+      document.getElementById('game-area').style.display = 'block';
+      initGame();
     }
 
-    function completeTask() {
+    // 初始化遊戲
+    function initGame() {
+      currentQuestionIndex = 0;
+      isShowingInfo = false;
+      // 隨機選擇 8 題
+      selectedQuestions = selectRandomQuestions(8);
+      loadQuestion();
+    }
+
+    // 隨機選擇題目
+    function selectRandomQuestions(count) {
+      const shuffled = [...animals].sort(() => Math.random() - 0.5);
+      return shuffled.slice(0, count);
+    }
+
+    // 載入題目
+    function loadQuestion() {
+      if (currentQuestionIndex >= selectedQuestions.length) {
+        return;
+      }
+
+      isShowingInfo = false;
+      const question = selectedQuestions[currentQuestionIndex];
+
+      // 更新進度
+      document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+
+      // 顯示題目
+      document.getElementById('animal-name').textContent = question.name;
+      document.getElementById('animal-pronunciation').textContent = question.pronunciation;
+      document.getElementById('animal-english').textContent = question.english;
+
+      // 顯示題目區域，隱藏資訊區域
+      document.getElementById('question-section').style.display = 'flex';
+      document.getElementById('animal-info').classList.remove('show');
+
+      // 更新按鈕狀態
+      updateButtons();
+    }
+
+    // 更新按鈕狀態
+    function updateButtons() {
+      const isLastQuestion = currentQuestionIndex >= selectedQuestions.length - 1;
+
+      // 如果正在顯示資訊，下一題按鈕才有效
+      document.getElementById('next-btn').style.display = isShowingInfo && !isLastQuestion ? 'inline-block' : 'none';
+      document.getElementById('correct-btn').style.display = !isShowingInfo ? 'inline-block' : 'none';
+      document.getElementById('complete-btn').style.display = isShowingInfo && isLastQuestion ? 'inline-block' : 'none';
+    }
+
+    // 顯示答對資訊
+    function showCorrectInfo() {
+      isShowingInfo = true;
+      const question = selectedQuestions[currentQuestionIndex];
+
+      // 設定圖片
+      document.getElementById('animal-img').src = question.image;
+      document.getElementById('animal-img').alt = question.name;
+
+      // 設定小知識
+      document.getElementById('info-title').textContent = `🌿 ${question.name} 小知識`;
+      const factsList = document.getElementById('animal-facts-list');
+      factsList.innerHTML = '';
+      question.facts.forEach(fact => {
+        const li = document.createElement('li');
+        li.textContent = fact;
+        factsList.appendChild(li);
+      });
+
+      // 隱藏題目區域，顯示資訊區域
+      document.getElementById('question-section').style.display = 'none';
+      document.getElementById('animal-info').classList.add('show');
+
+      // 更新按鈕
+      updateButtons();
+    }
+
+    // 下一題
+    function nextQuestion() {
+      currentQuestionIndex++;
+      loadQuestion();
+    }
+
+    // 完成挑戰
+    function completeChallenge() {
+      // 檢查是否已完成過
       const completed = getCompletedLocations();
       const isNew = !completed.includes(LOCATION_KEY);
 
       if (isNew) {
         // 顯示龍珠揭示動畫
-        document.getElementById('reveal-overlay').style.display = 'flex';
+        document.getElementById('reveal-overlay').classList.add('show');
 
         // 2秒後顯示成功頁面
         setTimeout(() => {
-          document.getElementById('reveal-overlay').style.display = 'none';
+          document.getElementById('reveal-overlay').classList.remove('show');
           markLocationCompleted(LOCATION_KEY);
           document.getElementById('success-overlay').classList.add('show');
         }, 2000);
       } else {
-        alert('你已經完成過這個任務了！');
+        // 已完成過，直接顯示成功頁面
+        document.getElementById('success-overlay').classList.add('show');
       }
     }
 
+    // 返回地圖
     function goBack() {
       window.location.href = '../index.html';
     }
 
-    init();
+    // 檢查是否已完成
+    function checkIfCompleted() {
+      const completed = getCompletedLocations();
+      if (completed.includes(LOCATION_KEY)) {
+        // 可以選擇顯示已完成訊息或直接讓玩家再玩
+      }
+    }
+
+    // 初始化檢查
+    checkIfCompleted();
   </script>
 
 </body>
