@@ -20,6 +20,27 @@
       padding: 20px;
     }
 
+    /* 主遊戲畫面世界地圖背景 */
+    #main-game {
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/World_map_blank_without_borders.svg/1280px-World_map_blank_without_borders.svg.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    #main-game::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(26, 26, 46, 0.85);
+      z-index: -1;
+    }
+
     /* 首頁容器 */
     #homepage {
       max-width: 800px;
@@ -522,6 +543,34 @@
       box-shadow: 0 8px 20px rgba(78, 205, 196, 0.6);
     }
 
+    /* 重新挑戰按鈕（南美洲關卡用） */
+    .restart-south-america-btn {
+      background: linear-gradient(45deg, #E91E63, #C2185B);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1rem;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
+      transition: all 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .restart-south-america-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(233, 30, 99, 0.6);
+    }
+
+    /* 頂部按鈕區 */
+    .top-actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
     /* 隱藏樣式 */
     .hidden {
       display: none !important;
@@ -602,6 +651,11 @@
     <!-- 龍珠計數器 -->
     <div class="dragon-ball-counter">
       目前龍珠數量：<span id="ball-count">0</span> / 7
+    </div>
+
+    <!-- 頂部按鈕區 -->
+    <div class="top-actions">
+      <button class="restart-south-america-btn" onclick="restartSouthAmerica()">🔄 重新挑戰南美洲</button>
     </div>
 
     <!-- 卡片網格 -->
@@ -870,6 +924,17 @@
       document.getElementById('main-game').style.display = 'none';
       document.getElementById('homepage').classList.remove('hidden');
       updateDragonBallDisplay();
+    }
+
+    // 重新挑戰南美洲（清除南美洲完成狀態並跳轉）
+    function restartSouthAmerica() {
+      // 從已完成列表中移除南美洲
+      let completed = getCompletedLocations();
+      completed = completed.filter(key => key !== 'south-america');
+      localStorage.setItem('completedLocations', JSON.stringify(completed));
+
+      // 跳轉到南美洲關卡
+      window.location.href = 'games/south-america.html';
     }
 
     // YouTube API 控制（限制播放時間）
