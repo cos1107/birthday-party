@@ -421,6 +421,16 @@
       box-shadow: 0 8px 20px rgba(117, 117, 117, 0.5);
     }
 
+    .btn-restart {
+      background: linear-gradient(45deg, #E91E63, #C2185B);
+      color: white;
+    }
+
+    .btn-restart:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(233, 30, 99, 0.5);
+    }
+
     .btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
@@ -646,6 +656,7 @@
         <button class="btn btn-next" id="next-btn" onclick="nextQuestion()">➡️ 下一題</button>
         <button class="btn btn-correct" id="correct-btn" onclick="showCorrectInfo()">✅ 答對了</button>
         <button class="btn btn-complete" id="complete-btn" onclick="completeChallenge()">🏆 破關</button>
+        <button class="btn btn-restart" onclick="restartChallenge()">🔄 重新挑戰</button>
         <button class="btn btn-back" onclick="goBack()">🗺️ 返回地圖</button>
       </div>
     </div>
@@ -666,7 +677,10 @@
       <div style="font-size: 10rem; margin-bottom: 20px; animation: iconGlow 2s ease-in-out infinite;">🟡</div>
       <h2>恭喜！挑戰成功！</h2>
       <p>你們成功完成南美洲動物比手畫腳挑戰！</p>
-      <button class="btn btn-back" onclick="goBack()">返回地圖</button>
+      <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+        <button class="btn btn-restart" onclick="restartChallenge()">🔄 重新挑戰</button>
+        <button class="btn btn-back" onclick="goBack()">返回地圖</button>
+      </div>
     </div>
   </div>
 
@@ -987,6 +1001,22 @@
     // 返回地圖
     function goBack() {
       window.location.href = '../index.html';
+    }
+
+    // 重新挑戰（回到規則頁面並清空紀錄）
+    function restartChallenge() {
+      // 隱藏所有 overlay
+      document.getElementById('success-overlay').classList.remove('show');
+      document.getElementById('reveal-overlay').classList.remove('show');
+
+      // 隱藏遊戲區域，顯示規則頁面
+      document.getElementById('game-area').style.display = 'none';
+      document.getElementById('rules-section').style.display = 'block';
+
+      // 重置遊戲狀態
+      currentQuestionIndex = 0;
+      isShowingInfo = false;
+      selectedQuestions = [];
     }
 
     // 檢查是否已完成
