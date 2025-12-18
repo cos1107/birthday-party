@@ -974,12 +974,15 @@
       if (player && player.getCurrentTime) {
         const currentTime = player.getCurrentTime();
         if (currentTime >= END_TIME) {
-          player.seekTo(START_TIME);
+          // 停在最後一秒，不重複播放
+          player.pauseVideo();
+          player.seekTo(END_TIME);
+          return;
         }
 
         // 每秒檢查一次
         if (player.getPlayerState() === YT.PlayerState.PLAYING) {
-          setTimeout(checkTime, 1000);
+          setTimeout(checkTime, 500);
         }
       }
     }
