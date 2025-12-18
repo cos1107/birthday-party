@@ -993,10 +993,19 @@
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    // 頁面載入時：永遠顯示首頁讓用戶看到遊戲規則
+    // 頁面載入時檢查是否從關卡返回
     window.addEventListener('DOMContentLoaded', function() {
-      // 首頁永遠先顯示，讓用戶每次都能看到遊戲規則
-      // 用戶需點擊「開始冒險」才會進入地圖頁
+      // 檢查 URL 參數，如果有 ?map=true 表示從關卡返回，直接顯示地圖頁
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('map') === 'true') {
+        // 從關卡返回，直接顯示地圖頁
+        document.getElementById('homepage').classList.add('hidden');
+        document.getElementById('main-game').style.display = 'block';
+        init();
+        // 清除 URL 參數避免重新整理時又跳到地圖
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+      // 否則顯示首頁讓用戶看到遊戲規則
     });
   </script>
 
