@@ -90,15 +90,15 @@
       text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     }
 
-    /* 規則說明區 */
+    /* 規則說明區 - 深色背景提高可讀性 */
     .rules-section {
-      background: rgba(255, 255, 255, 0.15);
+      background: linear-gradient(145deg, rgba(20, 60, 30, 0.95), rgba(15, 45, 20, 0.98));
       backdrop-filter: blur(10px);
-      border: 3px solid rgba(255, 215, 0, 0.6);
+      border: 3px solid rgba(255, 215, 0, 0.7);
       border-radius: 25px;
       padding: 40px;
       margin-bottom: 30px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
       animation: fadeInUp 0.6s ease 0.2s backwards;
     }
 
@@ -122,19 +122,21 @@
       font-size: 2rem;
       color: #ffd700;
       margin-bottom: 10px;
-      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     }
 
     .rule-content {
       font-size: 1.1rem;
       line-height: 2;
       margin-bottom: 20px;
+      color: #f0f0f0;
     }
 
     .rule-content h3 {
       color: #ffd700;
       font-size: 1.4rem;
       margin: 25px 0 15px 0;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
 
     .rule-content ul {
@@ -143,31 +145,33 @@
     }
 
     .rule-content li {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       padding-left: 25px;
       position: relative;
+      color: #fff;
     }
 
     .rule-content li::before {
       content: '•';
       position: absolute;
       left: 0;
-      color: #ffd700;
+      color: #90EE90;
       font-size: 1.5rem;
     }
 
     .rule-highlight {
-      background: rgba(255, 215, 0, 0.2);
+      background: rgba(255, 215, 0, 0.15);
       border-left: 5px solid #ffd700;
       padding: 20px;
       border-radius: 10px;
       margin: 20px 0;
       font-weight: bold;
       text-align: center;
+      color: #fff;
     }
 
     .rule-warning {
-      background: rgba(255, 100, 100, 0.2);
+      background: rgba(180, 50, 50, 0.3);
       border-left: 5px solid #ff6b6b;
       padding: 20px;
       border-radius: 10px;
@@ -175,17 +179,31 @@
     }
 
     .rule-warning h4 {
-      color: #ff6b6b;
+      color: #ff9999;
       margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .rule-warning ul {
+      color: #fff;
+    }
+
+    .rule-warning li {
+      color: #fff;
     }
 
     .rule-success {
-      background: rgba(76, 175, 80, 0.2);
+      background: rgba(76, 175, 80, 0.25);
       border-left: 5px solid #4CAF50;
       padding: 20px;
       border-radius: 10px;
       margin: 20px 0;
       text-align: center;
+    }
+
+    .rule-success h4 {
+      color: #90EE90;
+      margin-bottom: 10px;
     }
 
     .start-game-btn {
@@ -253,111 +271,95 @@
       background: rgba(255, 255, 255, 0.95);
       border: 4px solid rgba(255, 215, 0, 0.8);
       border-radius: 25px;
-      padding: 40px;
+      padding: 30px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
       margin-bottom: 30px;
       text-align: center;
-      min-height: 300px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
     }
 
     .question-title {
       color: #228B22;
-      font-size: 1.3rem;
-      margin-bottom: 20px;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
       font-weight: bold;
     }
 
     .animal-name {
       color: #2e7d32;
-      font-size: 4rem;
+      font-size: 3.5rem;
       font-weight: bold;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
     .animal-english {
       color: #4CAF50;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
     }
 
     .animal-pronunciation {
       color: #757575;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       margin-bottom: 20px;
     }
 
-    /* 答對後的資訊區 */
-    .animal-info {
-      display: none;
-      background: rgba(255, 255, 255, 0.95);
-      border: 4px solid rgba(76, 175, 80, 0.8);
-      border-radius: 25px;
-      padding: 40px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      margin-bottom: 30px;
-      animation: fadeInUp 0.5s ease;
+    /* 圖片和小知識 inline 樣式 */
+    .animal-info-inline {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px dashed #ddd;
+      align-items: flex-start;
     }
 
-    .animal-info.show {
-      display: block;
-    }
-
-    .animal-image {
-      width: 100%;
-      max-width: 400px;
-      height: 250px;
-      margin: 0 auto 25px;
-      border-radius: 15px;
+    .animal-image-inline {
+      flex: 0 0 200px;
+      height: 150px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
-    .animal-image img {
+    .animal-image-inline img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    .animal-facts {
+    .animal-facts-inline {
+      flex: 1;
       text-align: left;
       color: #333;
     }
 
-    .animal-facts h3 {
+    .animal-facts-inline h4 {
       color: #228B22;
-      font-size: 1.8rem;
-      text-align: center;
-      margin-bottom: 20px;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
     }
 
-    .animal-facts ul {
+    .animal-facts-inline ul {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
 
-    .animal-facts li {
-      font-size: 1.2rem;
-      line-height: 1.8;
-      padding: 10px 0;
-      padding-left: 30px;
+    .animal-facts-inline li {
+      font-size: 1rem;
+      line-height: 1.6;
+      padding: 5px 0;
+      padding-left: 25px;
       position: relative;
-      border-bottom: 1px solid #e0e0e0;
+      color: #555;
     }
 
-    .animal-facts li:last-child {
-      border-bottom: none;
-    }
-
-    .animal-facts li::before {
+    .animal-facts-inline li::before {
       content: '🌿';
       position: absolute;
       left: 0;
-      font-size: 1rem;
+      font-size: 0.9rem;
     }
 
     /* 動作按鈕區 */
@@ -429,6 +431,16 @@
     .btn-restart:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 20px rgba(233, 30, 99, 0.5);
+    }
+
+    .btn-foul {
+      background: linear-gradient(45deg, #ff5722, #e64a19);
+      color: white;
+    }
+
+    .btn-foul:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 87, 34, 0.5);
     }
 
     .btn:disabled {
@@ -534,15 +546,35 @@
       }
 
       .animal-name {
-        font-size: 3rem;
+        font-size: 2.5rem;
       }
 
       .animal-english {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
       }
 
       .question-section {
-        padding: 30px 20px;
+        padding: 20px 15px;
+      }
+
+      .animal-info-inline {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .animal-image-inline {
+        flex: none;
+        width: 100%;
+        max-width: 250px;
+        height: 180px;
+      }
+
+      .animal-facts-inline {
+        text-align: center;
+      }
+
+      .animal-facts-inline li {
+        text-align: left;
       }
 
       .action-buttons {
@@ -631,30 +663,29 @@
         </div>
       </div>
 
-      <!-- 題目區域 -->
+      <!-- 題目區域（包含圖片和小知識） -->
       <div class="question-section" id="question-section">
         <div class="question-title">🎯 請比手畫腳讓幼幼組猜這個動物：</div>
         <div class="animal-name" id="animal-name">水豚</div>
         <div class="animal-pronunciation" id="animal-pronunciation">（豚 ㄊㄨㄣˊ）</div>
         <div class="animal-english" id="animal-english">Capybara</div>
-      </div>
 
-      <!-- 答對後的資訊區 -->
-      <div class="animal-info" id="animal-info">
-        <div class="animal-image" id="animal-image">
-          <img src="" alt="動物圖片" id="animal-img">
-        </div>
-        <div class="animal-facts">
-          <h3 id="info-title">🌿 小知識補充</h3>
-          <ul id="animal-facts-list">
-          </ul>
+        <!-- 圖片和小知識（同一頁顯示） -->
+        <div class="animal-info-inline">
+          <div class="animal-image-inline">
+            <img src="" alt="動物圖片" id="animal-img">
+          </div>
+          <div class="animal-facts-inline">
+            <h4>🌿 小知識</h4>
+            <ul id="animal-facts-list"></ul>
+          </div>
         </div>
       </div>
 
       <!-- 動作按鈕 -->
       <div class="action-buttons">
-        <button class="btn btn-next" id="next-btn" onclick="nextQuestion()">➡️ 下一題</button>
-        <button class="btn btn-correct" id="correct-btn" onclick="showCorrectInfo()">✅ 答對了</button>
+        <button class="btn btn-correct" id="correct-btn" onclick="handleCorrect()">✅ 答對了</button>
+        <button class="btn btn-foul" id="foul-btn" onclick="handleFoul()">❌ 犯規</button>
         <button class="btn btn-complete" id="complete-btn" onclick="completeChallenge()">🏆 破關</button>
         <button class="btn btn-restart" onclick="restartChallenge()">🔄 重新挑戰</button>
         <button class="btn btn-back" onclick="goBack()">🗺️ 返回地圖</button>
@@ -885,7 +916,6 @@
 
     let currentQuestionIndex = 0;
     let selectedQuestions = [];
-    let isShowingInfo = false;
 
     // 開始遊戲
     function startGameFromRules() {
@@ -897,7 +927,6 @@
     // 初始化遊戲
     function initGame() {
       currentQuestionIndex = 0;
-      isShowingInfo = false;
       // 按順序選擇前 8 題
       selectedQuestions = animals.slice(0, 8);
       loadQuestion();
@@ -909,7 +938,6 @@
         return;
       }
 
-      isShowingInfo = false;
       const question = selectedQuestions[currentQuestionIndex];
 
       // 更新進度
@@ -920,9 +948,18 @@
       document.getElementById('animal-pronunciation').textContent = question.pronunciation;
       document.getElementById('animal-english').textContent = question.english;
 
-      // 顯示題目區域，隱藏資訊區域
-      document.getElementById('question-section').style.display = 'flex';
-      document.getElementById('animal-info').classList.remove('show');
+      // 設定圖片
+      document.getElementById('animal-img').src = question.image;
+      document.getElementById('animal-img').alt = question.name;
+
+      // 設定小知識
+      const factsList = document.getElementById('animal-facts-list');
+      factsList.innerHTML = '';
+      question.facts.forEach(fact => {
+        const li = document.createElement('li');
+        li.textContent = fact;
+        factsList.appendChild(li);
+      });
 
       // 更新按鈕狀態
       updateButtons();
@@ -932,41 +969,22 @@
     function updateButtons() {
       const isLastQuestion = currentQuestionIndex >= selectedQuestions.length - 1;
 
-      // 如果正在顯示資訊，下一題按鈕才有效
-      document.getElementById('next-btn').style.display = isShowingInfo && !isLastQuestion ? 'inline-block' : 'none';
-      document.getElementById('correct-btn').style.display = !isShowingInfo ? 'inline-block' : 'none';
-      document.getElementById('complete-btn').style.display = isShowingInfo && isLastQuestion ? 'inline-block' : 'none';
+      // 答對了和犯規按鈕：非最後一題時顯示
+      document.getElementById('correct-btn').style.display = !isLastQuestion ? 'inline-block' : 'none';
+      document.getElementById('foul-btn').style.display = !isLastQuestion ? 'inline-block' : 'none';
+
+      // 破關按鈕：最後一題時顯示
+      document.getElementById('complete-btn').style.display = isLastQuestion ? 'inline-block' : 'none';
     }
 
-    // 顯示答對資訊
-    function showCorrectInfo() {
-      isShowingInfo = true;
-      const question = selectedQuestions[currentQuestionIndex];
-
-      // 設定圖片
-      document.getElementById('animal-img').src = question.image;
-      document.getElementById('animal-img').alt = question.name;
-
-      // 設定小知識
-      document.getElementById('info-title').textContent = `🌿 ${question.name} 小知識`;
-      const factsList = document.getElementById('animal-facts-list');
-      factsList.innerHTML = '';
-      question.facts.forEach(fact => {
-        const li = document.createElement('li');
-        li.textContent = fact;
-        factsList.appendChild(li);
-      });
-
-      // 隱藏題目區域，顯示資訊區域
-      document.getElementById('question-section').style.display = 'none';
-      document.getElementById('animal-info').classList.add('show');
-
-      // 更新按鈕
-      updateButtons();
+    // 答對了 - 直接跳到下一題
+    function handleCorrect() {
+      currentQuestionIndex++;
+      loadQuestion();
     }
 
-    // 下一題
-    function nextQuestion() {
+    // 犯規 - 直接跳到下一題
+    function handleFoul() {
       currentQuestionIndex++;
       loadQuestion();
     }
