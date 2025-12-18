@@ -990,15 +990,10 @@
     var firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    // 頁面載入時檢查遊戲狀態
+    // 頁面載入時：永遠顯示首頁讓用戶看到遊戲規則
     window.addEventListener('DOMContentLoaded', function() {
-      const gameStarted = localStorage.getItem('gameStarted');
-      if (gameStarted === 'true') {
-        // 直接顯示主畫面
-        document.getElementById('homepage').classList.add('hidden');
-        document.getElementById('main-game').style.display = 'block';
-        init();
-      }
+      // 首頁永遠先顯示，讓用戶每次都能看到遊戲規則
+      // 用戶需點擊「開始冒險」才會進入地圖頁
     });
   </script>
 
