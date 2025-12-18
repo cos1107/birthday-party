@@ -627,19 +627,19 @@
       <div class="rule-content">
         <h3>▶️ 遊戲進行方式</h3>
         <ul>
-          <li>請<strong>幼幼組 3 位小朋友背對螢幕</strong>，準備猜題</li>
+          <li>請<strong>幼幼組 3 位小朋友背對螢幕</strong>，負責猜題</li>
           <li>螢幕上會出現「南美洲動物題目」</li>
           <li>由其他 <strong>8 位小朋友依序輪流</strong>用<strong>動作或語言提示</strong>，來幫助幼幼組小朋友猜答案</li>
-          <li>猜對後，換下一位比手畫腳者與新題目</li>
+          <li>猜對後，換下一位出來比手畫腳猜新一道題</li>
         </ul>
       </div>
 
       <div class="rule-warning">
         <h4>⚠️ 重要規則（一定要遵守！）</h4>
         <ul>
-          <li>✅ <strong>輪到的人可以說話提示</strong></li>
-          <li>❌ <strong>不可以說出題目中出現的任何字</strong>，說到視同犯規</li>
-          <li>❌ <strong>除了輪到的人，其他人嚴禁發出聲音</strong>，只能做動作，出聲視同犯規</li>
+          <li>✅ <strong>只有輪到的人可以說話提示</strong></li>
+          <li>❌ <strong>不可以說出題目中出現的任何字</strong>，說到任何一字視同犯規</li>
+          <li>❌ <strong>除了輪到的人，其他人嚴禁發出聲音</strong>，只能做動作，出聲亦視同犯規</li>
           <li>犯規時該題失敗，換下一題重新開始</li>
         </ul>
       </div>
@@ -647,8 +647,9 @@
       <div class="rule-success">
         <h4>🏆 過關條件</h4>
         <p style="font-size: 1.2rem; margin-top: 10px;">
-          必須<strong>答對全部 8 題</strong>才能成功通過南美洲關卡！<br>
-          <span style="font-size: 1rem; color: #90EE90;">（犯規的題目不算答對喔！）</span>
+          總共 16 題，必須<strong>答對 8 題</strong>才能成功通過南美洲關卡！<br>
+          <span style="font-size: 1rem; color: #90EE90;">（犯規的題目不算答對，會繼續出下一題）</span><br>
+          <span style="font-size: 1rem; color: #ff9999;">（16 題猜完還沒答對 8 題就失敗！）</span>
         </p>
       </div>
 
@@ -660,10 +661,10 @@
       <!-- 頂部資訊欄 -->
       <div class="game-info">
         <div class="progress-bar">
-          題目進度：<span id="current-question">1</span> / 8
+          題目進度：<span id="current-question">1</span> / <span id="total-questions">16</span>
         </div>
         <div class="progress-bar" style="background: rgba(76, 175, 80, 0.3); border-color: rgba(76, 175, 80, 0.8);">
-          ✅ 答對：<span id="correct-count">0</span> / 8
+          ✅ 答對：<span id="correct-count">0</span> / 8（答對 8 題即過關！）
         </div>
       </div>
 
@@ -726,8 +727,8 @@
     <div class="success-content">
       <div style="font-size: 8rem; margin-bottom: 20px;">😢</div>
       <h2 style="color: #ff6b6b;">挑戰失敗</h2>
-      <p>答對 <span id="final-correct-count">0</span> / 8 題</p>
-      <p style="margin-top: 10px; color: #aaa;">必須答對全部 8 題才能過關喔！</p>
+      <p>16 題猜完，答對 <span id="final-correct-count">0</span> / 8 題</p>
+      <p style="margin-top: 10px; color: #aaa;">必須答對 8 題才能過關喔！</p>
       <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
         <button class="btn btn-restart" onclick="restartChallenge()">🔄 重新挑戰</button>
         <button class="btn btn-back" onclick="goBack()">返回地圖</button>
@@ -762,8 +763,8 @@
         english: 'Bullet Ant',
         image: '../images/animals/south-america/02-bullet-ant.jpg',
         facts: [
-          '身體小，但很勇敢',
-          '咬人非常非常痛',
+          '因為被它咬到像被子彈擊中，所以叫子彈蟻',
+          '世界上體型最大且螫咬最痛的昆蟲之一',
           '住在熱帶雨林'
         ]
       },
@@ -774,9 +775,9 @@
         english: 'Alpaca',
         image: '../images/animals/south-america/03-alpaca.jpg',
         facts: [
-          '看起來像在微笑',
-          '住在高山，不怕冷',
-          '毛可以做成衣服'
+          '長相可愛，俗稱草泥馬',
+          '羊駝毛保暖性佳且不會引起刺癢感，比喀什米爾羊毛還貴',
+          '生氣時會吐口水作為防禦武器'
         ]
       },
       {
@@ -786,8 +787,9 @@
         english: 'Poison Dart Frog',
         image: '../images/animals/south-america/04-poison-dart-frog.jpg',
         facts: [
-          '顏色很亮，提醒大家不要碰',
-          '毒液強，原住民會把它塗在吹箭上'
+          '有各種鮮豔的顏色，提醒大家「我有毒，別吃我」',
+          '毒液強，原住民會把它塗在吹箭上',
+          '毒素來自吃下的獵物毒性轉換累積而成'
         ]
       },
       {
@@ -797,9 +799,9 @@
         english: 'Andean Condor',
         image: '../images/animals/south-america/05-andean-condor.jpg',
         facts: [
-          '翅膀張開像一架飛機',
-          '飛得很高、很久',
-          '幫大自然清理垃圾'
+          '翅膀張開超巨大',
+          '依賴上升熱氣流飛行，不拍打翅膀就可以連續飛行',
+          '大自然的清道夫，以大型動物的腐肉為食'
         ]
       },
       {
@@ -809,8 +811,8 @@
         english: 'Hercules Beetle',
         image: '../images/animals/south-america/06-hercules-beetle.jpg',
         facts: [
-          '世界最長的甲蟲',
-          '頭上有大角，像超級英雄'
+          '世界上體型最長且力量最大的甲蟲',
+          '以希臘神話英雄海克力士命名'
         ]
       },
       {
@@ -832,8 +834,9 @@
         english: 'Hoatzin',
         image: '../images/animals/south-america/08-hoatzin.jpg',
         facts: [
-          '保有始祖鳥特徵',
-          '身體有麝香味又稱臭鳥'
+          '有始祖鳥特徵，翅膀上有爪子',
+          '龐克頭的紅褐色長羽冠',
+          '身體散發牛糞的氣味，又稱臭鳥'
         ]
       },
       {
@@ -843,9 +846,9 @@
         english: 'Jaguar',
         image: '../images/animals/south-america/09-jaguar.jpg',
         facts: [
-          '雨林裡的大貓',
-          '跑得快、力氣大',
-          '很會游泳'
+          '貓科最強咬合力，能咬穿鱷魚的厚皮或烏龜的硬殼',
+          '全能運動員，擅長爬樹與奔跑，還很會游泳',
+          '獨來獨往的晨昏性/夜行性動物'
         ]
       },
       {
@@ -869,12 +872,12 @@
         facts: [
           '嘴巴又大又彩色',
           '喜歡吃水果',
-          '是雨林裡的明星'
+          '雨林裡的明星動物'
         ]
       },
       {
         id: 12,
-        name: '綠水蚺',
+        name: '綠水蚺（蚺 ㄖㄢˊ）',
         pronunciation: '',
         english: 'Green Anaconda',
         image: '../images/animals/south-america/12-green-anaconda.jpg',
@@ -893,7 +896,7 @@
         facts: [
           '身體是粉紅色的',
           '住在亞馬遜河',
-          '非常聰明'
+          '會用額頭發射超音波進行導航與獵食'
         ]
       },
       {
@@ -910,14 +913,14 @@
       },
       {
         id: 15,
-        name: '原駝',
+        name: '大食蟻獸',
         pronunciation: '',
-        english: 'Guanaco',
-        image: '../images/animals/south-america/15-guanaco.jpg',
+        english: 'Giant Anteater',
+        image: '../images/animals/south-america/15-giant-anteater.jpg',
         facts: [
-          '羊駝的野生親戚',
-          '跑得很快',
-          '住在草原和山區'
+          '長長的管狀頭部',
+          '舌頭有60公分長',
+          '每天吃掉 3 萬隻螞蟻或白蟻'
         ]
       },
       {
@@ -945,13 +948,17 @@
       initGame();
     }
 
+    const TOTAL_QUESTIONS = 16; // 總題數
+    const REQUIRED_CORRECT = 8; // 需要答對的題數
+
     // 初始化遊戲
     function initGame() {
       currentQuestionIndex = 0;
       correctCount = 0;
-      // 按順序選擇前 8 題
-      selectedQuestions = animals.slice(0, 8);
+      // 選擇全部 16 題
+      selectedQuestions = animals.slice(0, TOTAL_QUESTIONS);
       updateCorrectDisplay();
+      updateProgressDisplay();
       loadQuestion();
     }
 
@@ -960,16 +967,30 @@
       document.getElementById('correct-count').textContent = correctCount;
     }
 
+    // 更新進度顯示
+    function updateProgressDisplay() {
+      document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+      document.getElementById('total-questions').textContent = TOTAL_QUESTIONS;
+    }
+
     // 載入題目
     function loadQuestion() {
+      // 檢查是否已經答對 8 題 -> 過關
+      if (correctCount >= REQUIRED_CORRECT) {
+        completeChallenge();
+        return;
+      }
+
+      // 檢查是否所有題目都已經猜完 -> 失敗
       if (currentQuestionIndex >= selectedQuestions.length) {
+        showFailMessage();
         return;
       }
 
       const question = selectedQuestions[currentQuestionIndex];
 
       // 更新進度
-      document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+      updateProgressDisplay();
 
       // 顯示題目
       document.getElementById('animal-name').textContent = question.name;
@@ -995,15 +1016,13 @@
 
     // 更新按鈕狀態
     function updateButtons() {
-      const isLastQuestion = currentQuestionIndex >= selectedQuestions.length - 1;
+      // 簡化：只顯示答對和犯規按鈕
+      document.getElementById('correct-btn').style.display = 'inline-block';
+      document.getElementById('foul-btn').style.display = 'inline-block';
 
-      // 答對了和犯規按鈕：非最後一題時顯示
-      document.getElementById('correct-btn').style.display = !isLastQuestion ? 'inline-block' : 'none';
-      document.getElementById('foul-btn').style.display = !isLastQuestion ? 'inline-block' : 'none';
-
-      // 最後一題：顯示「答對了(最後一題)」和「犯規(最後一題)」按鈕
-      document.getElementById('correct-last-btn').style.display = isLastQuestion ? 'inline-block' : 'none';
-      document.getElementById('foul-last-btn').style.display = isLastQuestion ? 'inline-block' : 'none';
+      // 隱藏最後一題專用按鈕（不再需要）
+      document.getElementById('correct-last-btn').style.display = 'none';
+      document.getElementById('foul-last-btn').style.display = 'none';
 
       // 隱藏破關按鈕（改為自動判斷）
       document.getElementById('complete-btn').style.display = 'none';
