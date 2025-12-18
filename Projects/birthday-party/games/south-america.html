@@ -637,17 +637,18 @@
       <div class="rule-warning">
         <h4>⚠️ 重要規則（一定要遵守！）</h4>
         <ul>
-          <li>✅ <strong>可以說話提示</strong></li>
-          <li>❌ <strong>不可以說出題目中出現的任何字</strong></li>
-          <li>如果不小心說到題目裡的字，該題直接失敗，換下一題重新開始</li>
+          <li>✅ <strong>輪到的人可以說話提示</strong></li>
+          <li>❌ <strong>不可以說出題目中出現的任何字</strong>，說到視同犯規</li>
+          <li>❌ <strong>除了輪到的人，其他人嚴禁發出聲音</strong>，只能做動作，出聲視同犯規</li>
+          <li>犯規時該題失敗，換下一題重新開始</li>
         </ul>
       </div>
 
       <div class="rule-success">
         <h4>🏆 過關條件</h4>
         <p style="font-size: 1.2rem; margin-top: 10px;">
-          8 位小朋友出的題目，<strong>全部都成功讓幼幼組小朋友猜對</strong>，<br>
-          就成功通過南美洲關卡！
+          必須<strong>答對全部 8 題</strong>才能成功通過南美洲關卡！<br>
+          <span style="font-size: 1rem; color: #90EE90;">（犯規的題目不算答對喔！）</span>
         </p>
       </div>
 
@@ -660,6 +661,9 @@
       <div class="game-info">
         <div class="progress-bar">
           題目進度：<span id="current-question">1</span> / 8
+        </div>
+        <div class="progress-bar" style="background: rgba(76, 175, 80, 0.3); border-color: rgba(76, 175, 80, 0.8);">
+          ✅ 答對：<span id="correct-count">0</span> / 8
         </div>
       </div>
 
@@ -686,7 +690,9 @@
       <div class="action-buttons">
         <button class="btn btn-correct" id="correct-btn" onclick="handleCorrect()">✅ 答對了</button>
         <button class="btn btn-foul" id="foul-btn" onclick="handleFoul()">❌ 犯規</button>
-        <button class="btn btn-complete" id="complete-btn" onclick="completeChallenge()">🏆 破關</button>
+        <button class="btn btn-correct" id="correct-last-btn" onclick="handleCorrectLast()" style="display: none;">✅ 答對了（結算）</button>
+        <button class="btn btn-foul" id="foul-last-btn" onclick="handleFoulLast()" style="display: none;">❌ 犯規（結算）</button>
+        <button class="btn btn-complete" id="complete-btn" onclick="completeChallenge()" style="display: none;">🏆 破關</button>
         <button class="btn btn-restart" onclick="restartChallenge()">🔄 重新挑戰</button>
         <button class="btn btn-back" onclick="goBack()">🗺️ 返回地圖</button>
       </div>
@@ -709,6 +715,20 @@
       <h2>恭喜！挑戰成功！</h2>
       <p>你們成功完成南美洲動物比手畫腳挑戰！</p>
       <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+        <button class="btn btn-restart" onclick="restartChallenge()">🔄 重新挑戰</button>
+        <button class="btn btn-back" onclick="goBack()">返回地圖</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 挑戰失敗 Overlay -->
+  <div class="success-overlay" id="fail-overlay">
+    <div class="success-content">
+      <div style="font-size: 8rem; margin-bottom: 20px;">😢</div>
+      <h2 style="color: #ff6b6b;">挑戰失敗</h2>
+      <p>答對 <span id="final-correct-count">0</span> / 8 題</p>
+      <p style="margin-top: 10px; color: #aaa;">必須答對全部 8 題才能過關喔！</p>
+      <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
         <button class="btn btn-restart" onclick="restartChallenge()">🔄 重新挑戰</button>
         <button class="btn btn-back" onclick="goBack()">返回地圖</button>
       </div>
@@ -916,6 +936,7 @@
 
     let currentQuestionIndex = 0;
     let selectedQuestions = [];
+    let correctCount = 0; // 答對題數
 
     // 開始遊戲
     function startGameFromRules() {
@@ -927,9 +948,16 @@
     // 初始化遊戲
     function initGame() {
       currentQuestionIndex = 0;
+      correctCount = 0;
       // 按順序選擇前 8 題
       selectedQuestions = animals.slice(0, 8);
+      updateCorrectDisplay();
       loadQuestion();
+    }
+
+    // 更新答對計數顯示
+    function updateCorrectDisplay() {
+      document.getElementById('correct-count').textContent = correctCount;
     }
 
     // 載入題目
@@ -973,23 +1001,58 @@
       document.getElementById('correct-btn').style.display = !isLastQuestion ? 'inline-block' : 'none';
       document.getElementById('foul-btn').style.display = !isLastQuestion ? 'inline-block' : 'none';
 
-      // 破關按鈕：最後一題時顯示
-      document.getElementById('complete-btn').style.display = isLastQuestion ? 'inline-block' : 'none';
+      // 最後一題：顯示「答對了(最後一題)」和「犯規(最後一題)」按鈕
+      document.getElementById('correct-last-btn').style.display = isLastQuestion ? 'inline-block' : 'none';
+      document.getElementById('foul-last-btn').style.display = isLastQuestion ? 'inline-block' : 'none';
+
+      // 隱藏破關按鈕（改為自動判斷）
+      document.getElementById('complete-btn').style.display = 'none';
     }
 
-    // 答對了 - 直接跳到下一題
+    // 答對了 - 增加答對數並跳到下一題
     function handleCorrect() {
+      correctCount++;
+      updateCorrectDisplay();
       currentQuestionIndex++;
       loadQuestion();
     }
 
-    // 犯規 - 直接跳到下一題
+    // 犯規 - 不增加答對數，跳到下一題
     function handleFoul() {
       currentQuestionIndex++;
       loadQuestion();
     }
 
-    // 完成挑戰
+    // 最後一題答對
+    function handleCorrectLast() {
+      correctCount++;
+      updateCorrectDisplay();
+      checkGameResult();
+    }
+
+    // 最後一題犯規
+    function handleFoulLast() {
+      checkGameResult();
+    }
+
+    // 檢查遊戲結果
+    function checkGameResult() {
+      if (correctCount >= 8) {
+        // 答對 8 題，過關！
+        completeChallenge();
+      } else {
+        // 沒有答對 8 題，顯示失敗訊息
+        showFailMessage();
+      }
+    }
+
+    // 顯示失敗訊息
+    function showFailMessage() {
+      document.getElementById('final-correct-count').textContent = correctCount;
+      document.getElementById('fail-overlay').classList.add('show');
+    }
+
+    // 完成挑戰（答對 8 題）
     function completeChallenge() {
       // 檢查是否已完成過
       const completed = getCompletedLocations();
@@ -1021,6 +1084,7 @@
       // 隱藏所有 overlay
       document.getElementById('success-overlay').classList.remove('show');
       document.getElementById('reveal-overlay').classList.remove('show');
+      document.getElementById('fail-overlay').classList.remove('show');
 
       // 隱藏遊戲區域，顯示規則頁面
       document.getElementById('game-area').style.display = 'none';
@@ -1028,7 +1092,7 @@
 
       // 重置遊戲狀態
       currentQuestionIndex = 0;
-      isShowingInfo = false;
+      correctCount = 0;
       selectedQuestions = [];
     }
 

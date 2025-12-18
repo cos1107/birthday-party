@@ -672,7 +672,7 @@
 
     <!-- 頂部按鈕區 -->
     <div class="top-actions">
-      <button class="restart-south-america-btn" onclick="restartSouthAmerica()">🔄 重新挑戰南美洲</button>
+      <button class="restart-south-america-btn" onclick="restartAllChallenges()">🔄 重新挑戰（清除所有進度）</button>
     </div>
 
     <!-- 卡片網格 -->
@@ -939,15 +939,16 @@
       updateDragonBallDisplay();
     }
 
-    // 重新挑戰南美洲（清除南美洲完成狀態並跳轉）
-    function restartSouthAmerica() {
-      // 從已完成列表中移除南美洲
-      let completed = getCompletedLocations();
-      completed = completed.filter(key => key !== 'south-america');
-      localStorage.setItem('completedLocations', JSON.stringify(completed));
-
-      // 跳轉到南美洲關卡
-      window.location.href = 'games/south-america.html';
+    // 重新挑戰全部（清除所有進度）
+    function restartAllChallenges() {
+      if (confirm('確定要清除所有進度，重新挑戰每一關嗎？')) {
+        // 清除所有進度
+        resetGame();
+        // 重新渲染卡片
+        renderCards();
+        // 更新龍珠顯示
+        updateDragonBallDisplay();
+      }
     }
 
     // YouTube API 控制（限制播放時間）
