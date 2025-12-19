@@ -644,22 +644,24 @@
 	<h2 class="rules-title">🌟 遊戲規則說明</h2>
 	
 	<p>
-        11位小勇士請同心協力收集七顆真正的龍珠，召喚神龍並獲得最終的寶藏！<br><br>
+        <strong>11位小夥伴請同心協力收集七顆真正的龍珠，召喚神龍並獲得最終的寶藏！</strong><br><br>
 		
 		每回合輪流推派一人抽取一顆龍珠，依照指示前往指定地點。<br>
-		   <strong>-🟡真龍珠關卡: 合作破關，才能取得龍珠。</strong><br>
-		   <strong>-⚪假龍珠關卡: 會出現七龍珠主角，告訴你沒有龍珠</strong><br>
+		   🟡真龍珠關卡: 合作破關，才能取得龍珠。<br>
+		   ⚪假龍珠關卡: 會出現七龍珠主角，告訴你沒有龍珠。<br><br>
+
 		
-		不論是真龍珠或假龍珠，請保管好你抽出來的龍珠和紙條。
-                湊齊<strong>七顆真龍珠</strong>，視為完成任務，也會自動得到剩餘所有龍珠。<br>
-                每一位小朋友都會分配到一顆<strong>專屬龍珠</strong>喔！
+		不論是真龍珠或假龍珠，請保管好你抽出來的龍珠和紙條。<br>
+                找出七顆真龍珠，視為完成任務，也會自動得到剩餘所有假龍珠。<br><br>
                 
-                每顆龍珠都暗藏了神祕提示，請將所有提示組合起來，找出正確的咒語。<br>
-                一起大聲念咒、召喚神龍，就能領取<strong>破關獎勵</strong>！<br><br>		                
+                每一位小朋友會分配到一顆<strong>專屬龍珠，暗藏神祕提示。</strong>
+                請將所有提示組合起來，找出正確的咒語。<br><br>
+
+                最後，所有人一起大聲念出咒語、召喚神龍，就能領取<strong>破·關·獎·勵</strong>！<br><br>		                
     </p>
 	
 	<p class="rules-footer">
-		過程中，請彼此尊重、互相支持，尋找屬於你們的寶藏！
+		過程中，請彼此尊重、互相扶持，團結合作尋找寶藏！
 	</p>
 	</div>
     <!-- 開始冒險按鈕 -->
@@ -716,11 +718,12 @@
   <div class="success-overlay" id="fake-reveal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 10000; justify-content: center; align-items: center;">
     <div class="success-content" style="text-align: center; animation: dragonBallReveal 1.2s ease;">
       <div style="font-size: 8rem; margin-bottom: 20px; animation: iconGlow 2s ease-in-out infinite;">⚪</div>
-      <h2 style="font-size: 2.5rem; color: #ffd700; margin-bottom: 20px; animation: fadeInUp 1s ease 0.3s backwards;">任務完成！</h2>
-      <p style="font-size: 1.3rem; animation: fadeInUp 1s ease 0.6s backwards;">咦!? 這裡沒有龍珠:(</p>
+      <h2 style="font-size: 2.5rem; color: #ffd700; margin-bottom: 20px; animation: fadeInUp 1s ease 0.3s backwards;">再接再厲！</h2>
+      <p style="font-size: 1.3rem; animation: fadeInUp 1s ease 0.6s backwards;"> >_< </p>
     </div>
   </div>
 
+<!-- 真龍珠揭示 Overlay（謎語關卡用） -->  <div class="success-overlay" id="real-reveal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 10000; justify-content: center; align-items: center;">    <div class="success-content" style="text-align: center; animation: dragonBallReveal 1.2s ease;">      <div style="font-size: 8rem; margin-bottom: 20px; animation: iconGlow 2s ease-in-out infinite;">🟡</div>      <h2 style="font-size: 2.5rem; color: #ffd700; margin-bottom: 20px; animation: fadeInUp 1s ease 0.3s backwards;">恭喜！獲得龍珠！</h2>      <p style="font-size: 1.3rem; animation: fadeInUp 1s ease 0.6s backwards;">你獲得了一顆真龍珠</p>    </div>  </div>
   <!-- 神龍召喚 Overlay -->
   <div class="dragon-overlay" id="dragon-overlay">
     <div class="dragon-content">
@@ -912,26 +915,32 @@
     function closeJokeModal() {
       document.getElementById('joke-modal').classList.remove('show');
 
-      // 標記假龍珠任務為已完成（但不增加龍珠數量）
-      if (currentLocation && currentLocation.type === 'joke') {
-        const completed = getCompletedLocations();
+      if (!currentLocation) return;
 
-        // 如果還沒完成，顯示揭示動畫後標記為完成
-        if (!completed.includes(currentLocation.key)) {
-          // 顯示假龍珠揭示動畫
-          document.getElementById('fake-reveal-overlay').style.display = 'flex';
+      const completed = getCompletedLocations();
+      if (completed.includes(currentLocation.key)) return;
 
-          // 2秒後隱藏揭示動畫，標記完成並重新渲染卡片
-          setTimeout(() => {
-            document.getElementById('fake-reveal-overlay').style.display = 'none';
+      if (currentLocation.type === 'real') {
+        // 真龍珠謎語關卡（北冰洋、南極洲、太平洋）
+        document.getElementById('real-reveal-overlay').style.display = 'flex';
 
-            completed.push(currentLocation.key);
-            localStorage.setItem('completedLocations', JSON.stringify(completed));
+        setTimeout(() => {
+          document.getElementById('real-reveal-overlay').style.display = 'none';
+          markLocationCompleted(currentLocation.key);
+          updateDragonBallDisplay();
+          renderCards();
+          checkDragonSummon();
+        }, 2000);
+      } else if (currentLocation.type === 'joke') {
+        // 假龍珠任務
+        document.getElementById('fake-reveal-overlay').style.display = 'flex';
 
-            // 重新渲染卡片以顯示完成狀態（顯示⚪圖示）
-            renderCards();
-          }, 2000);
-        }
+        setTimeout(() => {
+          document.getElementById('fake-reveal-overlay').style.display = 'none';
+          completed.push(currentLocation.key);
+          localStorage.setItem('completedLocations', JSON.stringify(completed));
+          renderCards();
+        }, 2000);
       }
     }
 
