@@ -733,7 +733,7 @@
   <script>
     // 地點資料
     const locations = [
-      { key: 'arctic', name: '北極', type: 'real', emoji: '🧊',
+      { key: 'arctic', name: '北冰洋', type: 'real', emoji: '🧊',
         image: 'images/jokes/oceania.jpg',
         question: '猜一個歷史人物?',
         answer: '拿破輪 = 拿破崙' },
@@ -808,7 +808,7 @@
         if (isCompleted && location.type === 'real') {
           // 真龍珠：顯示「已取得第 X 顆龍珠」
           // 計算這是第幾顆真龍珠（只計算真龍珠，不包括假龍珠）
-          const realDragonKeys = ['asia', 'africa', 'south-america', 'europe', 'north-america', 'pacific', 'indian-ocean'];
+          const realDragonKeys = ['asia', 'africa', 'south-america', 'arctic', 'north-america', 'pacific', 'antarctica'];
           const completedRealDragons = completed.filter(key => realDragonKeys.includes(key));
           const completionIndex = completedRealDragons.indexOf(location.key) + 1;
           content += `<p class="completion-text">已取得第 ${completionIndex} 顆龍珠</p>`;
@@ -887,7 +887,13 @@
       document.getElementById('joke-question').textContent = location.question;
       document.getElementById('joke-answer').textContent = location.answer;
       document.getElementById('joke-answer').classList.remove('show');
-      document.getElementById('show-answer-btn').style.display = 'inline-block';
+      
+      // joke 類型不顯示「看答案」按鈕，只保留「返回地圖」
+      if (location.type === 'joke') {
+        document.getElementById('show-answer-btn').style.display = 'none';
+      } else {
+        document.getElementById('show-answer-btn').style.display = 'inline-block';
+      }
       document.getElementById('joke-modal').classList.add('show');
     }
 
