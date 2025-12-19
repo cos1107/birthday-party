@@ -780,6 +780,8 @@
 
     // 開始冒險
     function startAdventure() {
+      // 從首頁開始時重置所有進度
+      resetGame();
       localStorage.setItem('gameStarted', 'true');
       document.getElementById('homepage').classList.add('hidden');
       document.getElementById('main-game').style.display = 'block';
