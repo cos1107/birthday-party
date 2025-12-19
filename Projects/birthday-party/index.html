@@ -644,19 +644,22 @@
 	<h2 class="rules-title">🌟 遊戲規則說明</h2>
 	
 	<p>
-        這次冒險共有 11 位小勇士，大家同心協力收集七顆真正的龍珠，才能召喚神龍並獲得最終的寶藏！<br><br>
+        11位小勇士請同心協力收集七顆真正的龍珠，召喚神龍並獲得最終的寶藏！<br><br>
 		
-		每一回合由隊伍推派一人抽取一顆龍珠，依照龍珠上的指示前往挑戰。挑戰可能是:<br>
-		   <strong>-遊戲任務</strong>：需要全隊合作才能過關。<br>
-		   <strong>-猜謎任務</strong>：需要找出正確解答。<br>
+		每回合輪流推派一人抽取一顆龍珠，依照指示前往指定地點。<br>
+		   <strong>-🟡真龍珠關卡: 合作破關，才能取得龍珠。</strong><br>
+		   <strong>-⚪假龍珠關卡: 會出現七龍珠主角，告訴你沒有龍珠</strong><br>
 		
-		破關後才會得知抽出的龍珠是真龍珠🟡或假龍珠⚪。 <br><br>
-		每一顆龍珠藏有一道<strong>神祕提示</strong>，請將所有提示組合起來，破解最終的咒語，才能真正召喚神龍！
-		若隊伍在探索途中提前抽齊七顆真龍珠，將會自動獲得所有剩餘的龍珠提示。<br><br>
+		不論是真龍珠或假龍珠，請保管好你抽出來的龍珠和紙條。
+                湊齊<strong>七顆真龍珠</strong>，視為完成任務，也會自動得到剩餘所有龍珠。<br>
+                每一位小朋友都會分配到一顆<strong>專屬龍珠</strong>喔！
+                
+                每顆龍珠都暗藏了神祕提示，請將所有提示組合起來，找出正確的咒語。<br>
+                一起大聲念咒、召喚神龍，就能領取<strong>破關獎勵</strong>！<br><br>		                
     </p>
 	
 	<p class="rules-footer">
-		在冒險的過程中，請彼此尊重、互相支持、團結合作，一起尋找屬於你們的最後寶藏！
+		過程中，請彼此尊重、互相支持，尋找屬於你們的寶藏！
 	</p>
 	</div>
     <!-- 開始冒險按鈕 -->
@@ -820,9 +823,11 @@
         card.addEventListener('click', () => {
           currentLocation = location;
           // 直接進入關卡，不顯示真假龍珠動畫
-          if (location.type === 'real') {
+          if (location.file) {
+            // 有遊戲頁面的關卡
             window.location.href = location.file;
-          } else {
+          } else if (location.image) {
+            // 有圖片的關卡（謎語或冷笑話）
             showJokeModal(location);
           }
         });
@@ -871,10 +876,10 @@
     function proceedToLocation() {
       document.getElementById('dragonball-type-modal').classList.remove('show');
 
-      if (currentLocation.type === 'real') {
+      if (currentLocation.file) {
         // 導向遊戲頁面
         window.location.href = currentLocation.file;
-      } else {
+      } else if (currentLocation.image) {
         // 顯示冷笑話 modal
         showJokeModal(currentLocation);
       }
