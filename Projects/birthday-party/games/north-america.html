@@ -13,7 +13,7 @@
 
     body {
       font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
-      background: linear-gradient(135deg, #DC143C 0%, #FF6347 100%);
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
       color: #fff;
       min-height: 100vh;
       padding: 20px;
@@ -67,12 +67,19 @@
       background: rgba(0, 0, 0, 0.2);
       border-radius: 10px;
       padding: 30px;
+      text-align: left;
+    }
+
+    .game-content h2 {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      color: #ffd700;
       text-align: center;
     }
 
     .game-content h3 {
-      font-size: 1.5rem;
-      margin-bottom: 20px;
+      font-size: 1.3rem;
+      margin-bottom: 12px;
       color: #ffd700;
     }
 
@@ -80,6 +87,108 @@
       font-size: 1.1rem;
       line-height: 1.8;
       margin-bottom: 20px;
+    }
+
+    .game-content ul, .game-content ol {
+      margin-left: 20px;
+      line-height: 2;
+      margin-bottom: 20px;
+    }
+
+    .game-content li {
+      margin-bottom: 5px;
+    }
+
+    /* 影片區域 */
+    .video-section {
+      margin: 30px 0;
+      text-align: center;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      background: #000;
+    }
+
+    .video-container iframe,
+    .video-container #youtube-player {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .start-video-btn {
+      background: linear-gradient(45deg, #ff6b6b, #ee5a5a);
+      color: white;
+      border: none;
+      padding: 20px 50px;
+      font-size: 1.5rem;
+      border-radius: 50px;
+      cursor: pointer;
+      margin: 20px 0;
+      box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    .start-video-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+    }
+
+    .start-video-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .video-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .next-video-btn {
+      background: linear-gradient(45deg, #4ecdc4, #44a3a0);
+      color: white;
+      border: none;
+      padding: 18px 45px;
+      font-size: 1.3rem;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    .next-video-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 35px rgba(78, 205, 196, 0.6);
+    }
+
+    .next-video-btn:active {
+      transform: translateY(-1px);
+    }
+
+    .highlight-box {
+      background: rgba(255, 215, 0, 0.15);
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 25px;
+      text-align: center;
+    }
+
+    .highlight-box p {
+      color: #ffd700;
+      margin: 0;
+      font-weight: bold;
     }
 
     .button-group {
@@ -241,6 +350,19 @@
         padding: 20px;
       }
 
+      .game-content {
+        padding: 20px;
+      }
+
+      .game-content h2 {
+        font-size: 1.5rem;
+      }
+
+      .start-video-btn {
+        padding: 15px 35px;
+        font-size: 1.2rem;
+      }
+
       .success-content .dragon-ball {
         font-size: 6rem;
       }
@@ -256,13 +378,13 @@
   <div class="container">
     <div class="header">
       <h1>🌎 北美洲</h1>
-      <p>真龍珠任務 #5</p>
+      <p>真龍珠任務 - 英文大考驗</p>
     </div>
 
     <div class="game-area">
       <div class="instructions">
         <h2>📜 任務說明</h2>
-        <p>歡迎來到北美洲！這裡有廣闊的平原、高聳的山脈和繁榮的城市。探索這片多元的大陸，獲得龍珠！</p>
+        <p>歡迎來到北美洲！這裡是英語的發源地之一，準備好接受英文節拍挑戰了嗎？</p>
       </div>
 
       <div class="already-completed" id="already-completed" style="display: none;">
@@ -271,17 +393,58 @@
       </div>
 
       <div class="game-content">
-        <h3>🎯 挑戰任務</h3>
-        <p>請在這裡放入您的遊戲內容，例如：</p>
-        <ul style="text-align: left; max-width: 500px; margin: 0 auto; font-size: 1.1rem; line-height: 2;">
-          <li>問答題</li>
-          <li>拼圖遊戲</li>
-          <li>團隊合作任務</li>
-          <li>解謎遊戲</li>
-        </ul>
-        <p style="margin-top: 20px; color: #ffd700;">
-          ⚠️ 這是範例內容，請根據您的需求自訂遊戲玩法！
-        </p>
+        <h2>🎧 Say Words on the Beat!</h2>
+
+        <div style="margin-bottom: 20px;">
+          <h3>👑 遊戲角色</h3>
+          <ul>
+            <li><strong>挑戰者</strong>：小朋友</li>
+            <li><strong>PK 對手</strong>：現場任選一位大人（一對一挑戰）</li>
+          </ul>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <h3>🎵 挑戰內容</h3>
+          <p style="margin-bottom: 10px;">跟著影片的節拍，大聲念出畫面中出現的指定英文單字！</p>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <h3>🕹️ 遊戲玩法</h3>
+          <ol>
+            <li>小朋友選一位大人上台進行 PK</li>
+            <li>點選下方「開始挑戰」按鈕播放影片</li>
+            <li><strong>由大人先開始挑戰</strong>，跟著節拍唸出畫面上的單字</li>
+            <li>只要念錯或跟不上節拍，就立刻停住並記錄時間</li>
+            <li>接著換小朋友挑戰同一部影片</li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <h3>🏆 勝負規則</h3>
+          <ul>
+            <li><strong>誰撐得比較久，誰就獲勝！</strong></li>
+            <li>小朋友只要比大人撐得久，就算挑戰成功 🎉</li>
+          </ul>
+        </div>
+
+        <!-- 影片區域 -->
+        <div class="video-section">
+          <div class="video-container" id="video-container" style="display: none;">
+            <div id="youtube-player"></div>
+          </div>
+          <div class="video-buttons">
+            <button class="start-video-btn" id="start-btn" onclick="startChallenge()">
+              🎬 開始挑戰
+            </button>
+            <button class="next-video-btn" id="next-btn" onclick="nextVideo()" style="display: none;">
+              ▶️ 下一題
+            </button>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <p>⚠️ 小提醒：專心聽節拍、看清楚單字，加油！</p>
+        </div>
       </div>
 
       <div class="button-group" style="margin-top: 30px;">
@@ -318,12 +481,98 @@
   <script>
     const LOCATION_KEY = 'north-america';
 
+    // Say Words on the Beat 影片清單
+    const VIDEO_IDS = [
+      'rebyxAAPM8o',
+      'OAcw8gN_0vk',
+      'mqgWEVBgmAM',
+      'NGlZUh2i1UI',
+      'XOZNLxvpP_U'
+    ];
+
+    let player = null;
+    let currentVideoId = null;
+
     function init() {
       const completed = getCompletedLocations();
       if (completed.includes(LOCATION_KEY)) {
         document.getElementById('already-completed').style.display = 'block';
         document.getElementById('complete-btn').disabled = true;
       }
+    }
+
+    // 隨機選擇一部影片
+    function getRandomVideoId() {
+      const randomIndex = Math.floor(Math.random() * VIDEO_IDS.length);
+      return VIDEO_IDS[randomIndex];
+    }
+
+    // YouTube IFrame API 回調
+    function onYouTubeIframeAPIReady() {
+      // API 準備好了，等待用戶點擊開始
+    }
+
+    // 播放器狀態改變
+    function onPlayerStateChange(event) {
+      // 當影片播放結束時 (state = 0)，停在最後畫面
+      if (event.data === YT.PlayerState.ENDED) {
+        // 影片結束，停在最後一幀，不重複播放
+        player.seekTo(player.getDuration() - 0.1);
+        player.pauseVideo();
+      }
+    }
+
+    // 開始挑戰
+    function startChallenge() {
+      const videoContainer = document.getElementById('video-container');
+      const startBtn = document.getElementById('start-btn');
+      const nextBtn = document.getElementById('next-btn');
+
+      // 顯示影片容器
+      videoContainer.style.display = 'block';
+
+      // 隨機選擇影片
+      currentVideoId = getRandomVideoId();
+
+      // 創建 YouTube 播放器
+      if (player) {
+        player.loadVideoById(currentVideoId);
+      } else {
+        player = new YT.Player('youtube-player', {
+          height: '100%',
+          width: '100%',
+          videoId: currentVideoId,
+          playerVars: {
+            'autoplay': 1,
+            'rel': 0,
+            'modestbranding': 1
+          },
+          events: {
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      // 隱藏開始按鈕，顯示下一題按鈕
+      startBtn.style.display = 'none';
+      nextBtn.style.display = 'inline-block';
+
+      // 滾動到影片位置
+      videoContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // 下一題
+    function nextVideo() {
+      // 隨機選擇新影片
+      currentVideoId = getRandomVideoId();
+
+      // 載入新影片
+      if (player) {
+        player.loadVideoById(currentVideoId);
+      }
+
+      // 滾動到影片位置
+      document.getElementById('video-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     function completeTask() {
@@ -348,6 +597,12 @@
     function goBack() {
       window.location.href = '../index.html?map=true';
     }
+
+    // 載入 YouTube IFrame API
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     init();
   </script>
