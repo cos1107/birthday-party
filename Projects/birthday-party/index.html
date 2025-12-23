@@ -543,6 +543,29 @@
       filter: drop-shadow(0 0 30px #ffd700);
     }
 
+    .summon-btn {
+      background: linear-gradient(45deg, #ff6b6b, #ff8787);
+      color: white;
+      border: none;
+      padding: 20px 50px;
+      font-size: 1.5rem;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(255, 107, 107, 0.5);
+      transition: all 0.3s ease;
+      animation: summonPulse 1.5s infinite;
+    }
+
+    @keyframes summonPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 5px 20px rgba(255, 107, 107, 0.5); }
+      50% { transform: scale(1.05); box-shadow: 0 8px 30px rgba(255, 107, 107, 0.8); }
+    }
+
+    .summon-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 30px rgba(255, 107, 107, 0.7);
+    }
+
     .reset-btn {
       background: linear-gradient(45deg, #4ecdc4, #44a3a0);
       color: white;
@@ -558,6 +581,126 @@
     .reset-btn:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 20px rgba(78, 205, 196, 0.6);
+    }
+
+    /* 影片播放 Overlay */
+    .video-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 3000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .video-overlay.show {
+      display: flex;
+    }
+
+    .video-overlay .video-wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .video-overlay iframe {
+      width: 100%;
+      height: 100%;
+      max-width: 100vw;
+      max-height: 100vh;
+    }
+
+    /* 最終生日快樂畫面 */
+    .birthday-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+      z-index: 4000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .birthday-overlay.show {
+      display: flex;
+    }
+
+    .birthday-content {
+      text-align: center;
+      animation: birthdayAppear 1.5s ease;
+    }
+
+    @keyframes birthdayAppear {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { transform: scale(1.1); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .birthday-content .star-emoji {
+      font-size: 6rem;
+      display: block;
+      margin-bottom: 20px;
+      animation: starSpin 3s linear infinite;
+    }
+
+    @keyframes starSpin {
+      0% { transform: rotate(0deg) scale(1); }
+      25% { transform: rotate(90deg) scale(1.1); }
+      50% { transform: rotate(180deg) scale(1); }
+      75% { transform: rotate(270deg) scale(1.1); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    .birthday-content h1 {
+      font-size: 4rem;
+      background: linear-gradient(45deg, #ffd700, #ff6b6b, #ff8787, #ffd700);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientFlow 3s ease infinite;
+      margin-bottom: 30px;
+      text-shadow: none;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .birthday-content .celebration {
+      font-size: 3rem;
+      margin-bottom: 40px;
+    }
+
+    .birthday-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 767px) {
+      .birthday-content h1 {
+        font-size: 2.5rem;
+      }
+      .birthday-content .star-emoji {
+        font-size: 4rem;
+      }
+      .birthday-content .celebration {
+        font-size: 2rem;
+      }
     }
 
     /* 重新挑戰按鈕（南美洲關卡用） */
@@ -729,7 +872,32 @@
     <div class="dragon-content">
       <span class="dragon-emoji">🐲</span>
       <h1>七顆龍珠已收集完畢!<br>只差最後一步解開咒語, 神龍正在等著你們!</h1>
-      <button class="reset-btn" onclick="restartGame()">🔄 再玩一次</button>
+      <button class="summon-btn" onclick="summonDragon()">🐉 召喚神龍</button>
+    </div>
+  </div>
+
+  <!-- 影片播放 Overlay -->
+  <div class="video-overlay" id="video-overlay">
+    <div class="video-wrapper">
+      <iframe
+        id="dragon-video"
+        src=""
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <!-- 最終生日快樂畫面 -->
+  <div class="birthday-overlay" id="birthday-overlay">
+    <div class="birthday-content">
+      <span class="star-emoji">⭐</span>
+      <h1>星星 生日快樂!</h1>
+      <div class="celebration">🎉🎂🎁🎈🎊</div>
+      <div class="birthday-buttons">
+        <button class="reset-btn" onclick="restartGame()">🔄 再玩一次</button>
+      </div>
     </div>
   </div>
 
@@ -961,9 +1129,54 @@
       resetGame();
       localStorage.removeItem('gameStarted');
       document.getElementById('dragon-overlay').classList.remove('show');
+      document.getElementById('video-overlay').classList.remove('show');
+      document.getElementById('birthday-overlay').classList.remove('show');
       document.getElementById('main-game').style.display = 'none';
       document.getElementById('homepage').classList.remove('hidden');
       updateDragonBallDisplay();
+      // 停止並重置影片
+      document.getElementById('dragon-video').src = '';
+    }
+
+    // 召喚神龍 - 播放影片
+    let dragonVideoPlayer;
+    function summonDragon() {
+      // 隱藏龍珠收集完成畫面
+      document.getElementById('dragon-overlay').classList.remove('show');
+      // 顯示影片播放畫面
+      document.getElementById('video-overlay').classList.add('show');
+      // 設定影片來源並自動播放
+      const videoFrame = document.getElementById('dragon-video');
+      videoFrame.src = 'https://www.youtube.com/embed/oMrYhB2ewrs?autoplay=1&enablejsapi=1';
+
+      // 初始化神龍影片播放器
+      if (typeof YT !== 'undefined' && YT.Player) {
+        initDragonVideoPlayer();
+      } else {
+        // 等待 YouTube API 載入完成
+        window.onDragonPlayerReady = initDragonVideoPlayer;
+      }
+    }
+
+    function initDragonVideoPlayer() {
+      dragonVideoPlayer = new YT.Player('dragon-video', {
+        events: {
+          'onStateChange': onDragonVideoStateChange
+        }
+      });
+    }
+
+    function onDragonVideoStateChange(event) {
+      // YT.PlayerState.ENDED = 0
+      if (event.data === YT.PlayerState.ENDED) {
+        showBirthdayScreen();
+      }
+    }
+
+    // 顯示生日快樂畫面
+    function showBirthdayScreen() {
+      document.getElementById('video-overlay').classList.remove('show');
+      document.getElementById('birthday-overlay').classList.add('show');
     }
 
     // 重新挑戰全部（清除所有進度）
@@ -989,6 +1202,11 @@
           'onStateChange': onPlayerStateChange
         }
       });
+      // 如果有等待初始化的神龍影片播放器
+      if (window.onDragonPlayerReady) {
+        window.onDragonPlayerReady();
+        window.onDragonPlayerReady = null;
+      }
     }
 
     function onPlayerStateChange(event) {
