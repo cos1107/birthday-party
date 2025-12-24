@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>測試國旗顯示</title>
+  <style>
+    body {
+      font-family: 'Microsoft JhengHei', sans-serif;
+      background: #f0f0f0;
+      padding: 40px;
+    }
+    .test-flag {
+      font-size: 8rem;
+      margin: 20px;
+      padding: 40px;
+      background: white;
+      border: 2px solid #333;
+      display: inline-block;
+      font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+    }
+    .label {
+      font-size: 1.5rem;
+      margin: 10px;
+      text-align: center;
+    }
+    .test-section {
+      margin: 30px 0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>國旗 Emoji 顯示測試</h1>
+
+  <div class="test-section">
+    <div class="label">埃及</div>
+    <div class="test-flag">🇪🇬</div>
+  </div>
+
+  <div class="test-section">
+    <div class="label">南非</div>
+    <div class="test-flag">🇿🇦</div>
+  </div>
+
+  <div class="test-section">
+    <div class="label">肯亞</div>
+    <div class="test-flag">🇰🇪</div>
+  </div>
+
+  <div class="test-section">
+    <div class="label">測試文字：這是一般文字</div>
+    <div class="test-flag" style="font-size: 2rem;">這是中文</div>
+  </div>
+
+  <p style="margin-top: 40px;">
+    <strong>說明：</strong><br>
+    如果你看到的是彩色的國旗圖案，表示你的瀏覽器支援國旗emoji。<br>
+    如果你看到的是兩個字母（例如 EG, ZA, KE），表示你的系統不支援國旗emoji顯示。
+  </p>
+</body>
+</html>
