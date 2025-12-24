@@ -1144,11 +1144,15 @@
       // 隱藏龍珠收集完成畫面
       document.getElementById('dragon-overlay').classList.remove('show');
       // 顯示影片播放畫面
-      document.getElementById('video-overlay').classList.add('show');
+      const videoOverlay = document.getElementById('video-overlay');
+      videoOverlay.classList.add('show');
+
+      // 嘗試進入全螢幕
+      requestFullscreen(videoOverlay);
 
       // 先清除舊的 iframe 內容，確保重新載入
       const videoWrapper = document.querySelector('.video-overlay .video-wrapper');
-      videoWrapper.innerHTML = '<iframe id="dragon-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+      videoWrapper.innerHTML = '<iframe id="dragon-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>';
 
       // 重置播放器
       dragonVideoPlayer = null;
@@ -1188,8 +1192,37 @@
       }
     }
 
+    // 全螢幕功能
+    function requestFullscreen(element) {
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+      } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+      } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+      }
+    }
+
+    function exitFullscreen() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      }
+    }
+
     // 顯示生日快樂畫面
     function showBirthdayScreen() {
+      // 先退出全螢幕
+      if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+        exitFullscreen();
+      }
       document.getElementById('video-overlay').classList.remove('show');
       document.getElementById('birthday-overlay').classList.add('show');
     }
