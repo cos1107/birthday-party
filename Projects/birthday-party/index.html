@@ -1139,28 +1139,43 @@
     }
 
     // 召喚神龍 - 播放影片
-    let dragonVideoPlayer;
+    let dragonVideoPlayer = null;
     function summonDragon() {
       // 隱藏龍珠收集完成畫面
       document.getElementById('dragon-overlay').classList.remove('show');
       // 顯示影片播放畫面
       document.getElementById('video-overlay').classList.add('show');
-      // 設定影片來源並自動播放
-      const videoFrame = document.getElementById('dragon-video');
-      videoFrame.src = 'https://www.youtube.com/embed/oMrYhB2ewrs?autoplay=1&enablejsapi=1';
 
-      // 初始化神龍影片播放器
-      if (typeof YT !== 'undefined' && YT.Player) {
-        initDragonVideoPlayer();
-      } else {
-        // 等待 YouTube API 載入完成
-        window.onDragonPlayerReady = initDragonVideoPlayer;
-      }
+      // 先清除舊的 iframe 內容，確保重新載入
+      const videoWrapper = document.querySelector('.video-overlay .video-wrapper');
+      videoWrapper.innerHTML = '<iframe id="dragon-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+
+      // 重置播放器
+      dragonVideoPlayer = null;
+
+      // 設定影片來源，確保從頭開始播放
+      const videoFrame = document.getElementById('dragon-video');
+      videoFrame.src = 'https://www.youtube.com/embed/oMrYhB2ewrs?autoplay=1&start=0&enablejsapi=1&rel=0';
+
+      // 延遲初始化播放器，確保 iframe 已載入
+      setTimeout(function() {
+        if (typeof YT !== 'undefined' && YT.Player) {
+          initDragonVideoPlayer();
+        } else {
+          window.onDragonPlayerReady = initDragonVideoPlayer;
+        }
+      }, 1000);
     }
 
     function initDragonVideoPlayer() {
+      if (dragonVideoPlayer) return; // 避免重複初始化
       dragonVideoPlayer = new YT.Player('dragon-video', {
         events: {
+          'onReady': function(event) {
+            // 確保從頭開始
+            event.target.seekTo(0);
+            event.target.playVideo();
+          },
           'onStateChange': onDragonVideoStateChange
         }
       });
