@@ -896,7 +896,7 @@
       <h1>星星 生日快樂!</h1>
       <div class="celebration">🎉🎂🎁🎈🎊</div>
       <div class="birthday-buttons">
-        <button class="reset-btn" onclick="restartGame()">🔄 再玩一次</button>
+        <button class="reset-btn" onclick="goToHomepage()">🏠 回到主畫面</button>
       </div>
     </div>
   </div>
@@ -1147,9 +1147,6 @@
       const videoOverlay = document.getElementById('video-overlay');
       videoOverlay.classList.add('show');
 
-      // 嘗試進入全螢幕
-      requestFullscreen(videoOverlay);
-
       // 先清除舊的 iframe 內容，確保重新載入
       const videoWrapper = document.querySelector('.video-overlay .video-wrapper');
       videoWrapper.innerHTML = '<iframe id="dragon-video" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>';
@@ -1157,9 +1154,14 @@
       // 重置播放器
       dragonVideoPlayer = null;
 
-      // 設定影片來源，確保從頭開始播放
+      // 設定影片來源，確保從頭開始播放（立即設定）
       const videoFrame = document.getElementById('dragon-video');
-      videoFrame.src = 'https://www.youtube.com/embed/oMrYhB2ewrs?autoplay=1&start=0&enablejsapi=1&rel=0';
+      videoFrame.src = 'https://www.youtube.com/embed/oMrYhB2ewrs?autoplay=1&start=0&enablejsapi=1&rel=0&playsinline=1';
+
+      // 嘗試進入全螢幕（在影片開始載入後）
+      setTimeout(function() {
+        requestFullscreen(videoOverlay);
+      }, 100);
 
       // 延遲初始化播放器，確保 iframe 已載入
       setTimeout(function() {
@@ -1169,6 +1171,18 @@
           window.onDragonPlayerReady = initDragonVideoPlayer;
         }
       }, 1000);
+    }
+
+    // 回到主畫面
+    function goToHomepage() {
+      document.getElementById('birthday-overlay').classList.remove('show');
+      document.getElementById('video-overlay').classList.remove('show');
+      document.getElementById('dragon-overlay').classList.remove('show');
+      document.getElementById('main-game').style.display = 'none';
+      document.getElementById('homepage').classList.remove('hidden');
+      // 停止並重置影片
+      const videoFrame = document.getElementById('dragon-video');
+      if (videoFrame) videoFrame.src = '';
     }
 
     function initDragonVideoPlayer() {
